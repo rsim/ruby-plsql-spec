@@ -19,9 +19,9 @@ Installing
 * Install Oracle client, e.g. [Oracle Instant Client](http://www.oracle.com/technology/tech/oci/instantclient/index.html)
 * Install rspec, ruby-oci8 and ruby-plsql (prefix with sudo if necessary)
 
-    gem install rspec
-    gem install ruby-oci8
-    gem install ruby-plsql
+        gem install rspec
+        gem install ruby-oci8
+        gem install ruby-plsql
 
 Another alternative is to use [JRuby](http://jruby.org) if for example it is necessary also to test Java classes / methods using Ruby.
 
@@ -29,21 +29,21 @@ Another alternative is to use [JRuby](http://jruby.org) if for example it is nec
 * Copy Oracle JDBC driver (e.g. ojdbc14.jar) to JRUBY_HOME/lib directory
 * Install rspec and ruby-plsql (prefix with sudo if necessary)
 
-    jruby -S gem install rspec
-    jruby -S gem install ruby-plsql
+        jruby -S gem install rspec
+        jruby -S gem install ruby-plsql
 
 Executing tests
 ---------------
 
 All tests can be run from command line using `spec` utility.
 
-* Run all tests in spec directory
+* Run all tests in spec directory:
 
-    spec spec
+        spec spec
 
-* Run all tests in specified file
+* Run all tests in specified file:
 
-    spec spec/betwnstr_spec.rb
+        spec spec/betwnstr_spec.rb
 
 Or you can use text editor or IDE which supports running RSpec tests.
 
