@@ -1,13 +1,17 @@
-PL/SQL testing with Ruby
-========================
+ruby-plsql-spec
+===============
+PL/SQL unit testing with Ruby
+-----------------------------
 
-Examples how to test PL/SQL procedures with Ruby libraries
+Unit testing of PL/SQL procedures with Ruby libraries:
 
-* [RSpec](http://rspec.info) - Ruby testing (or behavior driven development) framework
 * [ruby-plsql](http://github.com/rsim/ruby-plsql) - Ruby API for calling PL/SQL procedures
+* [RSpec](http://rspec.info) - Ruby testing (or behavior driven development) framework
 
 Examples
 --------
+
+PL/SQL procedure examples are in `source` subdirectory, test examples are in `spec` subdirectory.
 
 * BETWNSTR - example from [utPLSQL project](http://utplsql.sourceforge.net/)
 * AWARD_BONUS - example from [SQL Developer 2.1 tutorial](http://www.oracle.com/technology/obe/11gr2_db_prod/appdev/sqldev/sqldev_unit_test/sqldev_unit_test.htm)
