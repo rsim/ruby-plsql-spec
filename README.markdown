@@ -13,8 +13,9 @@ Examples
 
 PL/SQL procedure examples are in `source` subdirectory, test examples are in `spec` subdirectory.
 
-* BETWNSTR - example from [utPLSQL project](http://utplsql.sourceforge.net/)
-* AWARD_BONUS - example from [SQL Developer 2.1 tutorial](http://www.oracle.com/technology/obe/11gr2_db_prod/appdev/sqldev/sqldev_unit_test/sqldev_unit_test.htm)
+* `BETWNSTR` - example from [utPLSQL project](http://utplsql.sourceforge.net/)
+* `AWARD_BONUS` - example from [SQL Developer 2.1 tutorial](http://www.oracle.com/technology/obe/11gr2_db_prod/appdev/sqldev/sqldev_unit_test/sqldev_unit_test.htm)
+* `REMOVE_ROOMS_BY_NAME` - example from [Quest Code Tester for Oracle tutorial](http://www.quest.com/code-tester-for-oracle/product-demo/chap02.htm)
 
 Installing
 ----------
