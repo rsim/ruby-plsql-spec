@@ -20,6 +20,8 @@ PL/SQL procedure examples are in `source` subdirectory, test examples are in `sp
 Installing
 ----------
 
+See [Installing on Windows](INSTALL-Windows.markdown) in separate file.
+
 * Install [Ruby 1.8.7 or Ruby 1.9.1](http://www.ruby-lang.org/en/downloads/)
 * Install Oracle client, e.g. [Oracle Instant Client](http://www.oracle.com/technology/tech/oci/instantclient/index.html)
 * Install rspec, ruby-oci8 and ruby-plsql (prefix with sudo if necessary)
