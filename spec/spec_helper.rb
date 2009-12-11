@@ -27,11 +27,11 @@ Spec::Runner.configure do |config|
   end
 end
 
-# require all helper methods
-Dir[File.dirname(__FILE__) + '/helpers/*.rb'].each {|f| require f}
+# require all helper methods which are located in any helpers subdirectories
+Dir[File.dirname(__FILE__) + '/**/helpers/*.rb'].each {|f| require f}
 
-# require all factory modules
-Dir[File.dirname(__FILE__) + '/factories/*.rb'].each {|f| require f}
+# require all factory modules which are located in any factories subdirectories
+Dir[File.dirname(__FILE__) + '/**/factories/*.rb'].each {|f| require f}
 
 # Add source directory to load path where PL/SQL example procedures are defined.
 # It is not required if PL/SQL procedures are already loaded in test database in some other way.

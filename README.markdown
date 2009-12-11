@@ -54,7 +54,23 @@ All tests can be run from command line using `spec` utility.
 
 Or you can use text editor or IDE which supports running RSpec tests.
 
-Other information
------------------
+How to start?
+-------------
 
 Read blog post about [Oracle PL/SQL unit testing with Ruby](http://blog.rayapps.com/2009/11/27/oracle-plsql-unit-testing-with-ruby).
+
+If you are not familiar with Ruby I recommend to start with [Ruby in Twenty Minutes](http://www.ruby-lang.org/en/documentation/quickstart/) tutorial. Then you can take a look on some [RSpec examples](http://rspec.info/documentation/) how to write and structure tests. And then you can take a look at [ruby-plsql own tests](http://github.com/rsim/ruby-plsql/blob/master/spec/plsql/procedure_spec.rb) to see how to pass parameters and verify results for different PL/SQL data types.
+
+How to add ruby-plsql-spec to a new project?
+--------------------------------------------
+
+Create `spec` directory somewhere in your project directory structure where you will keep your ruby-plsql-spec tests. Copy spec_helper.rb to this directory and modify to your needs:
+
+* modify database connection settings
+* review other initialization settings (requiring helper files, factory files, source files) and adapt as necessary
+
+Create `helpers` directory. Review and copy needed helper files to helpers directory from this project.
+
+Create `factories` directory where to store definitions of test data factory methods (review example from this project).
+
+Start creating tests in files with `_spec.rb` at the end of file name. If there will be not so many files then you can place them directly in `spec` directory. If there will be many tests files then create separate directories per module / functionality group and place tests files in subdirectories. You can also create `factories` and `helpers` subdirectories per each module / functionality group.

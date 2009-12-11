@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 require 'remove_rooms_by_name'
 
@@ -35,7 +35,7 @@ describe "Remove rooms by name" do
       }.should raise_error(Exception, /ORA-02292/)
     }.should_not change(plsql.rooms, :all)
   end
-  
+
   it "should remove a room without furniture" do
     rooms_without_b = plsql.rooms.all("WHERE name NOT LIKE 'B%'")
     plsql.remove_rooms_by_name('B%')

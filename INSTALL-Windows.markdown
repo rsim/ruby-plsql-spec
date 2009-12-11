@@ -39,6 +39,10 @@ Install remaining gems with gem command from command line
     gem install rspec
     gem install ruby-plsql
 
+If you are behind firewall with proxy server then specify proxy server use -p option, e.g.: 
+
+    gem install rspec ruby-plsql -p http://proxy.example.com:8080
+
 Validate installation
 ---------------------
 
@@ -46,5 +50,5 @@ From command line run `irb` and try to connect to some Oracle database (use appr
 
     require "rubygems"
     require "ruby-plsql"
-    plsq.connection = OCI8.new "hr","hr","orcl"
+    plsql.connection = OCI8.new "hr","hr","orcl"
     plsql.dual.all
