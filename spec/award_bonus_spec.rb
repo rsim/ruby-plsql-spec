@@ -21,14 +21,14 @@ describe "Award bonus" do
   end
 
   it "should raise ORA-06510 exception if commission percentage is missing" do
-    salary, sales_amt, commission_pct = 1000,  1234.55,  nil
+    salary, sales_amt, commission_pct = 1000,  1234.55,  NULL
     employee = create_employee(
       :commission_pct => commission_pct,
       :salary => salary
     )
-    lambda do
+    lambda {
       plsql.award_bonus(employee[:employee_id], sales_amt)
-    end.should raise_error(Exception, /ORA-06510/)
+    }.should raise_error(/ORA-06510/)
   end
 
 end

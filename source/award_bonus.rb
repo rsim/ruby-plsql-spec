@@ -25,5 +25,5 @@ BEGIN
       SET salary = NVL(salary,0) + sales_amt*commission
         WHERE employee_id = emp_id;
   END IF;
-END award_bonus;
+END;
 SQL

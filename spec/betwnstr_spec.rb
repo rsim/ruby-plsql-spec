@@ -17,7 +17,7 @@ describe "Between string" do
   end
 
   it "should be correct with NULL string" do
-    plsql.betwnstr(nil, 5, 500).should be_nil
+    plsql.betwnstr(NULL, 5, 500).should == NULL
   end
 
 end

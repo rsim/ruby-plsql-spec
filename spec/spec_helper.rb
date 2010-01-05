@@ -19,10 +19,21 @@ end
 
 # Set autocommit to false so that automatic commits after each statement are _not_ performed
 plsql.connection.autocommit = false
+# reduce network traffic in case of large resultsets
+plsql.connection.prefetch_rows = 100
+# uncomment to log DBMS_OUTPUT to standard output
+# plsql.dbms_output_stream = STDOUT
 
 Spec::Runner.configure do |config|
+  config.before(:each) do
+    plsql.execute "SAVEPOINT before_each"
+  end
   config.after(:each) do
-    # Always perform rollback after each test
+    # Always perform rollback to savepoint after each test
+    plsql.execute "ROLLBACK TO before_each"
+  end
+  config.after(:all) do
+    # Always perform rollback after each describe block
     plsql.rollback
   end
 end

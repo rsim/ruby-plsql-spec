@@ -13,3 +13,5 @@ NilClass.class_eval do
   end
 end
 
+# NULL looks more like SQL NULL than nil
+NULL = nil
