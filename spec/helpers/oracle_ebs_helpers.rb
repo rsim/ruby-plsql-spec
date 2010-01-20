@@ -1,4 +1,5 @@
-def init_ebs_user(params)
+# initialize Oracle E-Business Suite session with specified user and responsibility
+def init_ebs_user(params={})
   # replace with default user name and responsibility and then it will not be necessary
   # to specify default value as parameter
   params = {

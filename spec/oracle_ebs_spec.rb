@@ -26,6 +26,12 @@ describe "Oracle E-Business Suite" do
       }.should raise_error(/Wrong user name or responsibility name/)
     end
 
+    it "should raise error with default username and responsibility parameters" do
+      lambda {
+        init_ebs_user
+      }.should raise_error(/Wrong user name or responsibility name/)
+    end
+
   end
 
   describe "Session information" do
