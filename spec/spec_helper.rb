@@ -24,6 +24,12 @@ plsql.connection.prefetch_rows = 100
 # uncomment to log DBMS_OUTPUT to standard output
 # plsql.dbms_output_stream = STDOUT
 
+# Do logoff when exiting to ensure that session temporary tables
+# (used when calling procedures with table types defined in packages)
+at_exit do
+  plsql.logoff
+end
+
 Spec::Runner.configure do |config|
   config.before(:each) do
     plsql.execute "SAVEPOINT before_each"
