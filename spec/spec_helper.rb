@@ -1,5 +1,6 @@
 require "rubygems"
 require "spec"
+gem "ruby-plsql", ">= 0.4.2"
 require "ruby-plsql"
 
 # Establish connection to database where tests will be performed.
@@ -7,15 +8,10 @@ require "ruby-plsql"
 DATABASE_USER = "hr"
 DATABASE_PASSWORD = "hr"
 DATABASE_NAME = "orcl"
-DATABASE_HOST = "localhost" # necessary for JDBC connection
-DATABASE_PORT = 1521        # necessary for JDBC connection
+DATABASE_HOST = "localhost"
+DATABASE_PORT = 1521
 
-unless defined?(JRUBY_VERSION)
-  plsql.connection = OCI8.new DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME
-else
-  plsql.connection = java.sql.DriverManager.getConnection("jdbc:oracle:thin:@#{DATABASE_HOST}:#{DATABASE_PORT}:#{DATABASE_NAME}",
-    DATABASE_USER, DATABASE_PASSWORD)
-end
+plsql.connect! DATABASE_USER, DATABASE_PASSWORD, :host => DATABASE_HOST, :port => DATABASE_PORT, :database => DATABASE_NAME
 
 # Set autocommit to false so that automatic commits after each statement are _not_ performed
 plsql.connection.autocommit = false
@@ -32,11 +28,11 @@ end
 
 Spec::Runner.configure do |config|
   config.before(:each) do
-    plsql.execute "SAVEPOINT before_each"
+    plsql.savepoint "before_each"
   end
   config.after(:each) do
     # Always perform rollback to savepoint after each test
-    plsql.execute "ROLLBACK TO before_each"
+    plsql.rollback_to "before_each"
   end
   config.after(:all) do
     # Always perform rollback after each describe block

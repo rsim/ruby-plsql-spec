@@ -2,9 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Oracle E-Business Suite" do
   before(:all) do
+    @old_connection = plsql.connection
     plsql.connection = OCI8.new "APPS", "APPS", "VIS"
     @user_name = "OPERATIONS"
     @responsibility_name = "System Administrator"
+  end
+
+  after(:all) do
+    plsql.connection = @old_connection
   end
 
   describe "Session initialization" do
