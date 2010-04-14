@@ -37,7 +37,7 @@ describe "Remove rooms by name" do
       lambda {
         plsql.remove_rooms_by_name('Living Room')
       }.should raise_error(/ORA-02292/)
-    }.should_not change(plsql.rooms, :all)
+    }.should_not change { plsql.rooms.all }
   end
 
   it "should raise exception when NULL value passed" do
@@ -45,7 +45,7 @@ describe "Remove rooms by name" do
       lambda {
         plsql.remove_rooms_by_name(NULL)
       }.should raise_error(/program error/)
-    }.should_not change(plsql.rooms, :all)
+    }.should_not change { plsql.rooms.all }
   end
 
 end
