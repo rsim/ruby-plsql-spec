@@ -1,4 +1,4 @@
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
+require 'spec_helper'
 
 # load 'award_bonus' procedure into the database
 require 'award_bonus'
