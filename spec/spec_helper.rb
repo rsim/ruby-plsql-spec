@@ -12,6 +12,7 @@ DATABASE_HOST = "localhost"
 DATABASE_PORT = 1521
 
 plsql.connect! DATABASE_USER, DATABASE_PASSWORD, :host => DATABASE_HOST, :port => DATABASE_PORT, :database => DATABASE_NAME
+# plsql.connect! "APPS", "APPS", "VIS"
 
 # Set autocommit to false so that automatic commits after each statement are _not_ performed
 plsql.connection.autocommit = false
