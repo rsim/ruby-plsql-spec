@@ -1,7 +1,8 @@
 require "rubygems"
 require "spec"
-gem "ruby-plsql", ">= 0.4.2"
+gem "ruby-plsql", ">= 0.4.3"
 require "ruby-plsql"
+
 
 # Establish connection to database where tests will be performed.
 # Change according to your needs.
@@ -21,9 +22,24 @@ plsql.connection.prefetch_rows = 100
 # uncomment to log DBMS_OUTPUT to standard output
 # plsql.dbms_output_stream = STDOUT
 
+# uncomment to log code coverage using DBMS_PROFILER
+# PLSQL_COVERAGE = true
+
+PLSQL_COVERAGE = ENV['COVERAGE'] && true unless defined?(PLSQL_COVERAGE)
+if PLSQL_COVERAGE
+  require File.expand_path('../support/plsql_coverage', __FILE__)
+  PLSQL::Coverage.start
+end
+
 # Do logoff when exiting to ensure that session temporary tables
 # (used when calling procedures with table types defined in packages)
 at_exit do
+  if PLSQL_COVERAGE
+    PLSQL::Coverage.stop
+    coverage_directory = File.expand_path('../../coverage', __FILE__)
+    PLSQL::Coverage.report :directory => coverage_directory
+  end
+
   plsql.logoff
 end
 
