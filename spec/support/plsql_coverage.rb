@@ -4,16 +4,23 @@ require 'fileutils'
 module PLSQL
   class Coverage
     def self.start
+      # ignore repeated invocation
+      return if @started
       create_profiler_tables
       result = plsql.dbms_profiler.start_profiler(
         :run_comment => "ruby-plsql-spec #{Time.now.xmlschema}",
         :run_number => nil
       )
       @run_number = result[1][:run_number]
+      @coverages = nil
+      @started = true
     end
 
     def self.stop
+      # ignore repeated invocation
+      return unless @started
       plsql.dbms_profiler.stop_profiler
+      @started = false
     end
 
     def self.create_profiler_tables
@@ -51,13 +58,22 @@ module PLSQL
       end
     end
 
-    def self.get_coverage(ignore_schemas=nil)
-      quoted_ignore_schemas = if ignore_schemas
-        ignore_schemas.map{|s| "'#{s.to_s.upcase.gsub(/[^\w\d\$]/,'')}'"}
+    def self.get_coverage(options)
+      quoted_ignore_schemas = if options[:ignore_schemas]
+        options[:ignore_schemas].map{|schema| quote_condition_string(schema)}
       else
         %w('SYS')
       end
       quoted_ignore_schemas << "'<anonymous>'"
+      like_condition = if options[:like]
+        'AND ((' << Array(options[:like]).map do |like|
+          like_schema, like_object = like.split('.')
+          condition = "u.unit_owner LIKE #{quote_condition_string(like_schema)}"
+          condition << " AND u.unit_name LIKE #{quote_condition_string(like_object)}" if like_object
+        end.join(') OR (') << '))'
+      else
+        nil
+      end
       @coverages = {}
       rows = plsql.select_all <<-EOS
         SELECT u.unit_owner, u.unit_name, d.line# line_number, d.total_occur
@@ -66,6 +82,7 @@ module PLSQL
           AND u.unit_owner NOT IN (#{quoted_ignore_schemas.join(',')})
           AND u.runid = d.runid
           AND u.unit_number = d.unit_number
+          #{like_condition}
         ORDER BY u.unit_owner, u.unit_name, d.line#
       EOS
       rows.each do |row|
@@ -79,8 +96,10 @@ module PLSQL
     end
 
     def self.report(options)
-      get_coverage(options[:ignore_schemas])
-      @directory = options[:directory]
+      # prevent repeated invocation after coverage is reported
+      return if @coverages
+      @directory = options.delete(:directory)
+      get_coverage(options)
       create_static_files
 
       # Read templates
@@ -112,6 +131,10 @@ module PLSQL
       EOS
       coverage = (@coverages[schema]||{})[object]||{}
 
+      total_lines = source.length
+      # return if no access to source of database object
+      # or if package body is wrapped
+      return if total_lines == 0 || source[0][1] =~ /^\s*PACKAGE BODY .* WRAPPED/i
 
       # sometimes first PROCEDURE or FUNCTION line is reported as not executed, force ignoring it
       source.each do |line, text|
@@ -120,7 +143,6 @@ module PLSQL
         end
       end
 
-      total_lines = source.length
       @total_lines += total_lines
       analyzed_lines = executed_lines = 0
       coverage.each do |line, value|
@@ -149,6 +171,9 @@ module PLSQL
       table_lines_html = @table_lines.join("\n")
 
       total_lines, analyzed_lines, executed_lines = @total_lines, @analyzed_lines, @executed_lines
+      # return if no access to source of database objects
+      return if total_lines == 0
+
       total_coverage = (total_lines - analyzed_lines + executed_lines).to_f / total_lines * 100
       code_coverage = analyzed_lines > 0 ? executed_lines.to_f / analyzed_lines * 100 : 0
 
@@ -171,6 +196,10 @@ module PLSQL
       %w(coverage.css jquery.min.js jquery.tablesorter.min.js rcov.js).each do |file|
         FileUtils.cp File.expand_path("../#{file}", __FILE__), "#{@directory}/#{file}"
       end
+    end
+
+    def self.quote_condition_string(string)
+      "'#{string.to_s.upcase.gsub(/[^\w\d\$\%\_]/,'')}'"
     end
 
 
