@@ -19,8 +19,10 @@ database_config.each do |name, params|
   plsql(name).connection.autocommit = false
   # reduce network traffic in case of large resultsets
   plsql(name).connection.prefetch_rows = 100
-  # uncomment to log DBMS_OUTPUT to standard output
-  # plsql(name).dbms_output_stream = STDOUT
+  # log DBMS_OUTPUT to standard output
+  if ENV['PLSQL_DBMS_OUTPUT']
+    plsql(name).dbms_output_stream = STDOUT
+  end
 
   # start code coverage collection
   if ENV['PLSQL_COVERAGE']

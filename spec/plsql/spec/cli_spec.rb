@@ -207,6 +207,40 @@ EOS
       end
 
     end
+
+    describe "with dbms_output" do
+      before(:all) do
+        plsql.connect! CONNECTION_PARAMS
+        plsql.execute <<-SQL
+          CREATE OR REPLACE PROCEDURE test_dbms_output IS
+          BEGIN
+            DBMS_OUTPUT.PUT_LINE('test_dbms_output');
+          END;
+        SQL
+        create_test 'shoud test dbms_output',
+          'plsql.test_dbms_output.should be_nil'
+      end
+
+      after(:all) do
+        plsql.execute "DROP PROCEDURE test_dbms_output" rescue nil
+      end
+
+      after(:each) do
+        ENV.delete 'PLSQL_DBMS_OUTPUT'
+      end
+
+      it "should show DBMS_OUTPUT in standard output" do
+        run_cli('run', '--dbms_output')
+        @stdout.should =~ /DBMS_OUTPUT: test_dbms_output/
+      end
+
+      it "should not show DBMS_OUTPUT without specifying option" do
+        run_cli('run')
+        @stdout.should_not =~ /DBMS_OUTPUT: test_dbms_output/
+      end
+
+    end
+
   end
 
   describe "version" do

@@ -33,6 +33,10 @@ EOS
       end
 
       desc 'run [FILES]', 'run all *_spec.rb tests in spec subdirectory or specified files'
+      method_option :"dbms-output",
+          :type => :boolean,
+          :default => false,
+          :banner => "show DBMS_OUTPUT messages"
       method_option :coverage,
           :type => :string,
           :banner => "generate code coverage report in specified directory (defaults to coverage/)"
@@ -47,6 +51,7 @@ EOS
           say "No spec subdirectory in current directory", :red
           exit 1
         end
+        ENV['PLSQL_DBMS_OUTPUT'] = 'true' if options[:"dbms-output"]
         ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]
         ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'] = options[:"ignore-schemas"].join(',') if options[:"ignore-schemas"]
         ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
