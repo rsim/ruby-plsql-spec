@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+  <title><%= object_name %> - coverage report</title>
+  <link href="coverage.css" media="all" rel="stylesheet" type="text/css">
+</head>
+<body>
+  <h1><%= object_name %></h1>
+  <div class="report_table_wrapper">
+    <table class='report' id='report_table'>
+      <thead>
+        <tr>
+          <th class="left_align">Name</th>
+          <th class="right_align">Total Lines</th>
+          <th class="right_align">Analyzed Lines</th>
+          <th class="left_align">Total Coverage</th>
+          <th class="left_align">Code Coverage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= table_line_html %>
+      </tbody>
+    </table>
+  </div> 
+  <table class="details">
+<% source.each do |line, text| %>
+<% classname = (cov = coverage[line]) ? (cov > 0 ? 'marked' : 'uncovered') : 'inferred' %>
+      <tr class="<%= classname %>" <%= (cov = coverage[line]) ? 'data-hits="'+cov.to_s+'"' : '' %>>
+        <td><pre><a name="line<%= line %>"><%= line %> </a><%= ERB::Util.h text.chomp %></pre></td>
+      </tr>
+<% end %>
+  </table>
+</body>
+</html>

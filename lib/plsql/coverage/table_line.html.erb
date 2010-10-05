@@ -1,0 +1,15 @@
+        <tr class="all_schemas all_coverage <%= schema %>_schema <%= ((code_coverage.to_i/10)..(code_coverage==100 ? 10 : 9)).map{|i| (i+1).to_s<<'0'}.join(' ') %>">
+          <td class="left_align"><a href="<%= file_name %>"><%= object_name %></a></td>
+          <td class='right_align'><tt><%= total_lines %></tt></td>
+          <td class='right_align'><tt><%= analyzed_lines %></tt></td>
+          <td class="left_align"><div class="percent_graph_legend"><tt class=''><%= '%.2f' % total_coverage %>%</tt></div>
+        <div class="percent_graph">
+          <div class="covered" style="width:<%= total_coverage.to_i %>px"></div>
+          <div class="uncovered" style="width:<%= 100 - total_coverage.to_i %>px"></div>
+        </div></td>
+          <td class="left_align"><div class="percent_graph_legend"><tt class=''><%= '%.2f' % code_coverage %>%</tt></div>
+        <div class="percent_graph">
+          <div class="covered" style="width:<%= code_coverage.to_i %>px"></div>
+          <div class="uncovered" style="width:<%= 100 - code_coverage.to_i %>px"></div>
+        </div></td>
+        </tr>

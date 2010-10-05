@@ -15,6 +15,7 @@ end if File.exist?(gemfile)
 $:.unshift(File.expand_path('../../lib', __FILE__))
 
 require 'spec'
+require 'nokogiri'
 
 require 'ruby-plsql-spec'
 
@@ -23,6 +24,14 @@ DATABASE_HOST = ENV['DATABASE_HOST'] || 'localhost'
 DATABASE_PORT = ENV['DATABASE_PORT'] || 1521
 DATABASE_USER = ENV['DATABASE_USER'] || 'hr'
 DATABASE_PASSWORD = ENV['DATABASE_PASSWORD'] || 'hr'
+
+CONNECTION_PARAMS = {
+  :username => DATABASE_USER,
+  :password => DATABASE_PASSWORD,
+  :database => DATABASE_NAME
+}
+CONNECTION_PARAMS[:host] = DATABASE_HOST if defined?(DATABASE_HOST)
+CONNECTION_PARAMS[:port] = DATABASE_PORT if defined?(DATABASE_PORT)
 
 Spec::Runner.configure do |config|
   # taken from thor specs
