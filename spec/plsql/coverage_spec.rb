@@ -34,6 +34,7 @@ END;
       }
     }
 
+    FileUtils.rm_rf(destination_root)
     @directory = File.join(destination_root, 'coverage')
   end
 

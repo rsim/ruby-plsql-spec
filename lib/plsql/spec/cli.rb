@@ -28,15 +28,28 @@ Please update spec/database.yml file and specify your database connection parame
 Create tests in spec/ directory (or in subdirectories of it) in *_spec.rb files.
 
 Run created tests with "plsql-spec run".
+Run tests with "plsql-spec run --coverage" to generate code coverage report in coverage/ directory.
 EOS
       end
 
       desc 'run [FILES]', 'run all *_spec.rb tests in spec subdirectory or specified files'
+      method_option :coverage,
+          :type => :string,
+          :banner => "generate code coverage report in specified directory (defaults to coverage/)"
+      method_option :"ignore-schemas",
+          :type => :array,
+          :banner => "which schemas to ignore when generating code coverage report"
+      method_option :like,
+          :type => :array,
+          :banner => "LIKE condition(s) for filtering which objects to include in code coverage report"
       def run_tests(*files)
         unless File.directory?('spec')
           say "No spec subdirectory in current directory", :red
           exit 1
         end
+        ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]
+        ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'] = options[:"ignore-schemas"].join(',') if options[:"ignore-schemas"]
+        ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
         if files.empty?
           say "Running all specs from spec/", :yellow
           puts run('spec spec', :verbose => false)

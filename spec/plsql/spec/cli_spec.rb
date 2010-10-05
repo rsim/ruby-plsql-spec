@@ -25,8 +25,8 @@ describe "plsql-spec" do
     "  username: #{DATABASE_USER}\n" <<
     "  password: #{DATABASE_PASSWORD}\n" <<
     "  database: #{DATABASE_NAME}\n"
-    content << "  host:     #{DATABASE_HOST}\n" if DATABASE_HOST
-    content << "  port:     #{DATABASE_PORT}\n" if DATABASE_PORT
+    content << "  host:     #{DATABASE_HOST}\n" if defined?(DATABASE_HOST)
+    content << "  port:     #{DATABASE_PORT}\n" if defined?(DATABASE_PORT)
     File.open(File.join(@root_dir, 'spec/database.yml'), 'w') do |file|
       file.write(content)
     end
@@ -95,7 +95,7 @@ EOS
 
     describe "successful tests" do
       before(:all) do
-        create_test 'SYSDATE should not be NULL ',
+        create_test 'SYSDATE should not be NULL',
           'plsql.sysdate.should_not == NULL'
         run_cli('run')
       end
@@ -111,7 +111,7 @@ EOS
 
     describe "failing tests" do
       before(:all) do
-        create_test 'SYSDATE should be NULL ',
+        create_test 'SYSDATE should be NULL',
           'plsql.sysdate.should == NULL'
         run_cli('run')
       end
@@ -127,7 +127,7 @@ EOS
 
     describe "specified files" do
       before(:all) do
-        create_test 'SYSDATE should not be NULL ',
+        create_test 'SYSDATE should not be NULL',
           'plsql.sysdate.should_not == NULL'
       end
 
@@ -140,6 +140,72 @@ EOS
         run_cli('run', 'spec/test_spec.rb', 'spec/test_spec.rb')
         @stdout.should =~ /2 examples/
       end
+    end
+
+    describe "with coverage" do
+      before(:all) do
+        plsql.connect! CONNECTION_PARAMS
+        plsql.execute <<-SQL
+          CREATE OR REPLACE FUNCTION test_profiler RETURN VARCHAR2 IS
+          BEGIN
+            RETURN 'test_profiler';
+          EXCEPTION
+            WHEN OTHERS THEN
+              RETURN 'others';
+          END;
+        SQL
+        create_test 'shoud test coverage',
+          'plsql.test_profiler.should == "test_profiler"'
+        @index_file = File.join(@root_dir, 'coverage/index.html')
+        @details_file = File.join(@root_dir, "coverage/#{DATABASE_USER.upcase}-TEST_PROFILER.html")
+      end
+
+      after(:all) do
+        plsql.execute "DROP FUNCTION test_profiler" rescue nil
+      end
+
+      before(:each) do
+        FileUtils.rm_rf File.join(@root_dir, 'coverage')
+      end
+
+      after(:each) do
+        %w(PLSQL_COVERAGE PLSQL_COVERAGE_IGNORE_SCHEMAS PLSQL_COVERAGE_LIKE).each do |variable|
+          ENV.delete variable
+        end
+      end
+
+      it "should report zero failures" do
+        run_cli('run', '--coverage')
+        @stdout.should =~ / 0 failures/
+      end
+
+      it "should generate coverage reports" do
+        run_cli('run', '--coverage')
+        File.file?(@index_file).should be_true
+        File.file?(@details_file).should be_true
+      end
+
+      it "should generate coverage reports in specified directory" do
+        run_cli('run', '--coverage', 'plsql_coverage')
+        File.file?(@index_file.gsub('coverage', 'plsql_coverage')).should be_true
+        File.file?(@details_file.gsub('coverage', 'plsql_coverage')).should be_true
+      end
+
+      it "should not generate coverage report for ignored schema" do
+        run_cli('run', '--coverage', '--ignore_schemas', DATABASE_USER)
+        File.file?(@details_file).should be_false
+      end
+
+      it "should generate coverage report for objects matching like condition" do
+        run_cli('run', '--coverage', '--like', "#{DATABASE_USER}.%")
+        File.file?(@details_file).should be_true
+      end
+
+      it "should not generate coverage report for objects not matching like condition" do
+        run_cli('run', '--coverage', '--like', "#{DATABASE_USER}.aaa%")
+        File.file?(@details_file).should be_false
+      end
+
     end
   end
 

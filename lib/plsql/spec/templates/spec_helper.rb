@@ -22,12 +22,25 @@ database_config.each do |name, params|
   # uncomment to log DBMS_OUTPUT to standard output
   # plsql(name).dbms_output_stream = STDOUT
 
+  # start code coverage collection
+  if ENV['PLSQL_COVERAGE']
+    PLSQL::Coverage.start(name)
+  end
 end
 
 # Do logoff when exiting to ensure that session temporary tables
 # (used when calling procedures with table types defined in packages)
 at_exit do
   database_connections.each do |name|
+    if ENV['PLSQL_COVERAGE']
+      PLSQL::Coverage.stop(name)
+      coverage_directory = name == :default ? ENV['PLSQL_COVERAGE'] : "#{ENV['PLSQL_COVERAGE']}/#{name}"
+      options = {:directory => coverage_directory}
+      options[:ignore_schemas] = ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'].split(',') if ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS']
+      options[:like] = ENV['PLSQL_COVERAGE_LIKE'].split(',') if ENV['PLSQL_COVERAGE_LIKE']
+      PLSQL::Coverage.report name, options
+      PLSQL::Coverage.cleanup name
+    end
     plsql(name).logoff
   end
 end
