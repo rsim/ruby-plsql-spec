@@ -1,0 +1,16 @@
+# Change default connection username, password and database.
+# Specify also host and port if not using tnsnames.ora connection.
+default:
+  username: hr
+  password: hr
+  database: orcl
+  # host: localhost
+  # port: 1521
+
+# Add other connection if needed.
+# You can access them with plsql(:other) where :other is connection name specified below.
+
+# other:
+#   username: scott
+#   password: tiger
+#   database: xe
