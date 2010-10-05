@@ -164,7 +164,7 @@ END;
       end
 
       it "should generate HTML table with source lines" do
-        @source.each_with_index do |line, i|
+        @source.split("\n").each_with_index do |line, i|
           if i == 0 && line =~ /^CREATE OR REPLACE (.*)$/
             line = $1
           end
