@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Raimonds Simanovskis"]
-  s.date = %q{2010-10-04}
+  s.date = %q{2010-10-05}
   s.default_executable = %q{plsql-spec}
   s.description = %q{ruby-plsql-spec is Oracle PL/SQL unit testing framework which is built using Ruby programming language, ruby-plsql library and RSpec testing framework.
 }
@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
      "examples/source/what_is_profiled.rb",
      "examples/spec/award_bonus_spec.rb",
      "examples/spec/betwnstr_spec.rb",
+     "examples/spec/database.yml",
      "examples/spec/factories/employee_factory.rb",
      "examples/spec/helpers/inspect_helpers.rb",
      "examples/spec/helpers/oracle_ebs_helpers.rb",
@@ -41,13 +42,16 @@ Gem::Specification.new do |s|
      "examples/spec/oracle_ebs_spec.rb",
      "examples/spec/remove_rooms_by_name_spec.rb",
      "examples/spec/spec_helper.rb",
-     "examples/spec/support/coverage.css",
-     "examples/spec/support/jquery.min.js",
-     "examples/spec/support/jquery.tablesorter.min.js",
-     "examples/spec/support/plsql_coverage.rb",
-     "examples/spec/support/proftab.sql",
-     "examples/spec/support/rcov.js",
      "examples/spec/what_is_profiled_spec.rb",
+     "lib/plsql/coverage.rb",
+     "lib/plsql/coverage/coverage.css",
+     "lib/plsql/coverage/details.html.erb",
+     "lib/plsql/coverage/index.html.erb",
+     "lib/plsql/coverage/jquery.min.js",
+     "lib/plsql/coverage/jquery.tablesorter.min.js",
+     "lib/plsql/coverage/proftab.sql",
+     "lib/plsql/coverage/rcov.js",
+     "lib/plsql/coverage/table_line.html.erb",
      "lib/plsql/spec.rb",
      "lib/plsql/spec/cli.rb",
      "lib/plsql/spec/templates/database.yml",
@@ -57,6 +61,7 @@ Gem::Specification.new do |s|
      "lib/plsql/spec/version.rb",
      "lib/ruby-plsql-spec.rb",
      "ruby-plsql-spec.gemspec",
+     "spec/plsql/coverage_spec.rb",
      "spec/plsql/spec/cli_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
@@ -67,7 +72,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Oracle PL/SQL unit testing framework using Ruby and RSpec}
   s.test_files = [
-    "spec/plsql/spec/cli_spec.rb",
+    "spec/plsql/coverage_spec.rb",
+     "spec/plsql/spec/cli_spec.rb",
      "spec/spec_helper.rb",
      "examples/source/award_bonus.rb",
      "examples/source/betwnstr.rb",
@@ -82,7 +88,6 @@ Gem::Specification.new do |s|
      "examples/spec/oracle_ebs_spec.rb",
      "examples/spec/remove_rooms_by_name_spec.rb",
      "examples/spec/spec_helper.rb",
-     "examples/spec/support/plsql_coverage.rb",
      "examples/spec/what_is_profiled_spec.rb"
   ]
 
@@ -93,7 +98,7 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<ruby-plsql>, [">= 0.4.3"])
       s.add_runtime_dependency(%q<thor>, [">= 0.14.2"])
-      s.add_development_dependency(%q<rspec>, ["~> 1.3.0"])
+      s.add_runtime_dependency(%q<rspec>, ["~> 1.3.0"])
     else
       s.add_dependency(%q<ruby-plsql>, [">= 0.4.3"])
       s.add_dependency(%q<thor>, [">= 0.14.2"])

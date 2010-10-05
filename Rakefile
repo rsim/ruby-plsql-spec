@@ -14,7 +14,7 @@ EOS
     gem.authors = ["Raimonds Simanovskis"]
     gem.add_dependency "ruby-plsql", ">= 0.4.3"
     gem.add_dependency "thor", ">= 0.14.2"
-    gem.add_development_dependency "rspec", "~> 1.3.0"
+    gem.add_dependency "rspec", "~> 1.3.0"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
