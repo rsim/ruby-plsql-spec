@@ -37,6 +37,10 @@ EOS
           :type => :boolean,
           :default => false,
           :banner => "show DBMS_OUTPUT messages"
+      method_option :"html",
+          :type => :boolean,
+          :default => false,
+          :banner => "generate HTML RSpec output to rspec-results.html"		  
       method_option :coverage,
           :type => :string,
           :banner => "generate code coverage report in specified directory (defaults to coverage/)"
@@ -52,20 +56,33 @@ EOS
           exit 1
         end
         ENV['PLSQL_DBMS_OUTPUT'] = 'true' if options[:"dbms-output"]
-        ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]
+        ENV['PLSQL_HTML'] = 'true' if options[:html]
+        ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]		
         ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'] = options[:"ignore-schemas"].join(',') if options[:"ignore-schemas"]
         ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
+		
+        if options[:html]
+          speccommand = "spec --format h:./rspec-results.html"
+        else
+          speccommand = "spec "
+        end
+		
         if files.empty?
           say "Running all specs from spec/", :yellow
-          puts run('spec spec', :verbose => false)
+          puts run("#{speccommand} spec", :verbose => false)
         else
           say "Running specs from #{files.join(', ')}", :yellow
-          puts run("spec #{files.join(' ')}", :verbose => false)
+          puts run("#{speccommand} #{files.join(' ')}", :verbose => false)
         end
+		
+        if options[:html]
+          say "Test results in ./rspec-results.html"
+        end		
+		
         unless $?.exitstatus == 0
           say "Failing tests!", :red
           exit 1
-        end
+        end		
       end
 
       desc '-v', 'show ruby-plsql-spec and ruby-plsql version'

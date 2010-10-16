@@ -65,6 +65,15 @@ You can get additional help about `plsql-spec` command line utility with
 
         plsql-spec help
 
+Generating HTML RSpec output
+----------------------------
+
+If you would like to see a colour HTML report about the test results, just run the tests with --html option:
+	
+        plsql-spec run --html
+		
+HTML report will be generated to ./rspec-results.html file. You can open it with your browser.
+
 Code coverage reporting
 -----------------------
 
