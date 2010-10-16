@@ -29,6 +29,7 @@ Create tests in spec/ directory (or in subdirectories of it) in *_spec.rb files.
 
 Run created tests with "plsql-spec run".
 Run tests with "plsql-spec run --coverage" to generate code coverage report in coverage/ directory.
+Run tests with "plsql-spec run --html" to generate RSpec report to test-results.html file.
 EOS
       end
 
@@ -37,6 +38,9 @@ EOS
           :type => :boolean,
           :default => false,
           :banner => "show DBMS_OUTPUT messages"
+      method_option :"html",
+          :type => :string,
+          :banner => "generate HTML RSpec output to specified file (default is test-results.html)"
       method_option :coverage,
           :type => :string,
           :banner => "generate code coverage report in specified directory (defaults to coverage/)"
@@ -52,16 +56,35 @@ EOS
           exit 1
         end
         ENV['PLSQL_DBMS_OUTPUT'] = 'true' if options[:"dbms-output"]
+        ENV['PLSQL_HTML'] = options[:html] if options[:html]
         ENV['PLSQL_COVERAGE'] = options[:coverage] if options[:coverage]
         ENV['PLSQL_COVERAGE_IGNORE_SCHEMAS'] = options[:"ignore-schemas"].join(',') if options[:"ignore-schemas"]
         ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
+
+        if options[:html]
+          spec_output_filename = "test-results.html"
+
+          if options[:html] != "html" # ?? if there is no filename given, the options[:html] == "html"
+            spec_output_filename = options[:html]
+          end
+
+          speccommand = "spec --format h:#{spec_output_filename} "
+        else
+          speccommand = "spec "
+        end
+
         if files.empty?
           say "Running all specs from spec/", :yellow
-          puts run('spec spec', :verbose => false)
+          puts run("#{speccommand} spec", :verbose => false)
         else
           say "Running specs from #{files.join(', ')}", :yellow
-          puts run("spec #{files.join(' ')}", :verbose => false)
+          puts run("#{speccommand} #{files.join(' ')}", :verbose => false)
         end
+
+        if options[:html]
+          say "Test results in #{spec_output_filename}"
+        end
+
         unless $?.exitstatus == 0
           say "Failing tests!", :red
           exit 1
