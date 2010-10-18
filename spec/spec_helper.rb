@@ -57,5 +57,9 @@ Spec::Runner.configure do |config|
     File.join(File.dirname(__FILE__), 'sandbox')
   end
 
-
 end
+
+# set default time zone in TZ environment variable
+# which will be used to set session time zone
+ENV['TZ'] ||= 'Europe/Riga'
+# ENV['TZ'] ||= 'UTC'
