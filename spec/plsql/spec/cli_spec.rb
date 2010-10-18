@@ -241,6 +241,40 @@ EOS
 
     end
 
+    describe "with html output" do
+      before(:all) do
+        create_test 'SYSDATE should not be NULL',
+          'plsql.sysdate.should_not == NULL'
+        @default_html_file = File.join(@root_dir, 'test-results.html')
+        @custom_file_name = 'custom-results.html'
+        @custom_html_file = File.join(@root_dir, @custom_file_name)
+      end
+
+      def delete_html_output_files
+        FileUtils.rm_rf @default_html_file
+        FileUtils.rm_rf @custom_html_file
+      end
+
+      before(:each) do
+        delete_html_output_files
+      end
+
+      after(:all) do
+        delete_html_output_files
+      end
+
+      it "should create default report file" do
+        run_cli('run', '--html')
+        File.read(@default_html_file).should =~ / 0 failures/
+      end
+
+      it "should create specified report file" do
+        run_cli('run', '--html', @custom_file_name)
+        File.read(@custom_html_file).should =~ / 0 failures/
+      end
+
+    end
+
   end
 
   describe "version" do
