@@ -295,4 +295,29 @@ EOS
     end
 
   end
+
+  describe "diff" do
+    before(:all) do
+      @test_strings = %w(test1 test2)
+      @test_files = %w(test1.txt test2.txt)
+      @test_strings.each_with_index do |string, i|
+        File.open(File.join(@root_dir, @test_files[i]), 'w') do |file|
+          file.write(string)
+        end
+      end
+      run_cli('diff', *@test_files.map{|file| File.join(@root_dir, file)})
+    end
+
+    after(:all) do
+      @test_files.each do |file|
+        FileUtils.rm_f(File.join(@root_dir, file))
+      end
+    end
+
+    it "should show diff" do
+      @stdout.should =~ /^\-#{@test_strings[0]}$/
+      @stdout.should =~ /^\+#{@test_strings[1]}$/
+    end
+  end
+
 end

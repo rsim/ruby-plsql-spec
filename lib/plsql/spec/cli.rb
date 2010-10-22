@@ -1,6 +1,10 @@
 require 'thor'
 require 'thor/actions'
 
+# use plsql-spec for showing diff of files
+# by defuault Thor uses diff utility which is not available on Windows
+ENV['THOR_DIFF'] = 'plsql-spec diff'
+
 module PLSQL
   module Spec
     class CLI < ::Thor
@@ -90,6 +94,12 @@ EOS
           say "Failing tests!", :red
           exit 1
         end
+      end
+
+      desc 'diff [FILE1] [FILE2]', 'show difference between files'
+      def diff(file1, file2)
+        differ = RSpec::Expectations::Differ.new
+        say differ.diff_as_string File.read(file2), File.read(file1)
       end
 
       desc '-v', 'show ruby-plsql-spec and ruby-plsql version'
