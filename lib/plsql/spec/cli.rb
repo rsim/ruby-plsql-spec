@@ -62,15 +62,12 @@ EOS
         ENV['PLSQL_COVERAGE_LIKE'] = options[:like].join(',') if options[:like]
 
         if options[:html]
-          spec_output_filename = "test-results.html"
+          # if there is no filename given, the options[:html] == "html"
+          spec_output_filename = options[:html] == 'html' ? 'test-results.html' : options[:html]
 
-          if options[:html] != "html" # ?? if there is no filename given, the options[:html] == "html"
-            spec_output_filename = options[:html]
-          end
-
-          speccommand = "spec --format h:#{spec_output_filename} "
+          speccommand = "rspec --format html --out #{spec_output_filename}"
         else
-          speccommand = "spec "
+          speccommand = "rspec"
         end
 
         if files.empty?
@@ -85,6 +82,10 @@ EOS
           say "Test results in #{spec_output_filename}"
         end
 
+        if options[:coverage]
+          say "Coverage report in #{options[:coverage]}/index.html"
+        end
+
         unless $?.exitstatus == 0
           say "Failing tests!", :red
           exit 1
@@ -95,7 +96,7 @@ EOS
       def version
         say "ruby-plsql-spec #{PLSQL::Spec::VERSION}"
         say "ruby-plsql      #{PLSQL::VERSION}"
-        say "rspec           #{::Spec::VERSION::STRING}"
+        say "rspec           #{::RSpec::Version::STRING}"
       end
 
     end

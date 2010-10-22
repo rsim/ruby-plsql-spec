@@ -47,7 +47,7 @@ at_exit do
   end
 end
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   config.before(:each) do
     database_connections.each do |name|
       plsql(name).savepoint "before_each"

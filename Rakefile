@@ -14,24 +14,22 @@ EOS
     gem.authors = ["Raimonds Simanovskis"]
     gem.add_dependency "ruby-plsql", ">= 0.4.3"
     gem.add_dependency "thor", ">= 0.14.2"
-    gem.add_dependency "rspec", "~> 1.3.0"
+    gem.add_dependency "rspec", "~> 2.0.1"
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'spec/rake/spectask'
-Spec::Rake::SpecTask.new(:spec) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.spec_files = FileList['spec/plsql/**/*_spec.rb']
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/plsql/**/*_spec.rb'
 end
 
-Spec::Rake::SpecTask.new(:rcov) do |spec|
-  spec.libs << 'lib' << 'spec'
-  spec.pattern = 'spec/plsql/**/*_spec.rb'
-  spec.rcov = true
-  spec.rcov_opts = ['--exclude', '/Library,spec/']
+RSpec::Core::RakeTask.new(:rcov) do |t|
+  t.rcov = true
+  t.rcov_opts =  ['--exclude', '/Library,spec/']
+  t.pattern = 'spec/plsql/**/*_spec.rb'
 end
 
 task :spec => :check_dependencies

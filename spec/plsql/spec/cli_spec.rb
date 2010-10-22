@@ -1,4 +1,4 @@
-require 'spec_helper'
+require File.expand_path('../../../spec_helper', __FILE__)
 
 describe "plsql-spec" do
 
@@ -291,7 +291,7 @@ EOS
     end
 
     it "should show rspec version" do
-      @stdout.should =~ /rspec\s+#{::Spec::VERSION::STRING.gsub('.','\.')}/
+      @stdout.should =~ /rspec\s+#{::RSpec::Version::STRING.gsub('.','\.')}/
     end
 
   end

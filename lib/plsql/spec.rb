@@ -1,4 +1,4 @@
-require 'spec'
+require 'rspec'
 require 'ruby-plsql'
 require 'plsql/coverage'
 require 'plsql/spec/cli'

@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'jeweler'
-gem 'rspec', '~> 1.3.0'
+gem 'rspec', '~> 2.0.1'
 gem 'thor', '~> 0.14.2'
 gem 'ruby-plsql', '~> 0.4.3'
 gem 'nokogiri', '>= 1.4.3'

@@ -1,20 +1,10 @@
 require "rubygems"
-
-# Set up gems listed in the Gemfile.
-gemfile = File.expand_path('../../Gemfile', __FILE__)
-begin
-  ENV['BUNDLE_GEMFILE'] = gemfile
-  require 'bundler'
-  Bundler.setup
-rescue Bundler::GemNotFound => e
-  STDERR.puts e.message
-  STDERR.puts "Try running `bundle install`."
-  exit!
-end if File.exist?(gemfile)
+require "bundler"
+Bundler.setup(:default)
 
 $:.unshift(File.expand_path('../../lib', __FILE__))
 
-require 'spec'
+require 'rspec'
 require 'nokogiri'
 
 require 'ruby-plsql-spec'
@@ -33,7 +23,7 @@ CONNECTION_PARAMS = {
 CONNECTION_PARAMS[:host] = DATABASE_HOST if defined?(DATABASE_HOST)
 CONNECTION_PARAMS[:port] = DATABASE_PORT if defined?(DATABASE_PORT)
 
-Spec::Runner.configure do |config|
+RSpec.configure do |config|
   # taken from thor specs
   def capture(stream)
     begin
