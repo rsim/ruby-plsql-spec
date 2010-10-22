@@ -1,3 +1,14 @@
+== 0.2.1 2010-10-22
+
+* Changes
+  * Use latest ruby-plsql version 0.4.4
+
+== 0.2.0 2010-10-22
+
+* Changes
+  * Upgraded to use RSpec 2.0
+  * Added --html option for plsql-spec run
+
 == 0.1.0 2010-10-01
 
 * Initial release
