@@ -158,6 +158,10 @@ END;
       adjust_test_coverage
     end
 
+    after(:all) do
+      PLSQL::Coverage.cleanup
+    end
+
     describe "details report" do
       before(:all) do
         @details_doc = Nokogiri::HTML(File.read(File.join(@directory, "#{DATABASE_USER.upcase}-TEST_PROFILER.html")))
