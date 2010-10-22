@@ -93,8 +93,30 @@ Read blog post about [Oracle PL/SQL unit testing with Ruby](http://blog.rayapps.
 If you are not familiar with Ruby I recommend to start with [Ruby in Twenty Minutes](http://www.ruby-lang.org/en/documentation/quickstart/) tutorial. Then you can take a look on some [RSpec examples](http://rspec.info/documentation/) how to write and structure tests. And then you can take a look at [ruby-plsql own tests](http://github.com/rsim/ruby-plsql/blob/master/spec/plsql/procedure_spec.rb) to see how to pass parameters and verify results for different PL/SQL data types.
 
 How to customize ruby-plsql-spec for my project?
---------------------------------------------
+------------------------------------------------
 
 * Review spec/spec_helper.rb file and modify if needed directories where you will store additional required files (helper files, factory files, source files).
 * Review and or create new helper files in `spec\helpers` directory.
 * Create new factory methods for test data creation in `factories` directory (see example in `examples/spec/factories`).
+
+How to upgrade ruby-plsql-spec to latest version
+------------------------------------------------
+
+You can see current ruby-plsql-spec version with
+
+        plsql-spec -v
+
+If you want to upgrade ruby-plsql-spec to latest version then just do
+
+        gem install ruby-plsql-spec
+
+If you have upgrade from ruby-plsql-spec version 0.1.0 to 0.2.0 then you need to update your spec_helper.rb file to use rspec 2.0. You can do it by running one more time
+
+        plsql-spec init
+
+which will check which current files are different from the latest templates. You need to update just spec_helper.rb file. When you will be prompted to overwrite spec_helper.rb file then at first you can enter `d` to see differences between current file and new template. If you have not changed original spec_helper.rb file then you will see just one difference
+
+        - Spec::Runner.configure do |config|
+        + RSpec.configure do |config|
+
+You can then answer `y` and this file will be updated. When you will be prompted to overwrite other files then you can review the changes in the same way and decide if you want them to be overwritten or not.
