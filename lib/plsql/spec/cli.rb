@@ -76,10 +76,10 @@ EOS
 
         if files.empty?
           say "Running all specs from spec/", :yellow
-          puts run("#{speccommand} spec", :verbose => false)
+          puts run("#{speccommand} spec", :verbose => false, :capture => true)
         else
           say "Running specs from #{files.join(', ')}", :yellow
-          puts run("#{speccommand} #{files.join(' ')}", :verbose => false)
+          puts run("#{speccommand} #{files.join(' ')}", :verbose => false, :capture => true)
         end
 
         if options[:html]
