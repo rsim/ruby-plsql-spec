@@ -20,9 +20,9 @@ PL/SQL procedure examples are in `examples/source` subdirectory, test examples a
 Installing
 ----------
 
-See [Installing on Windows](INSTALL-Windows.markdown) in separate file.
+See [Installing on Windows](INSTALL-Windows.md) in separate file.
 
-* Install [Ruby 1.8.7 or Ruby 1.9.2](http://www.ruby-lang.org/en/downloads/)
+* Install [Ruby 1.8.7 or Ruby 1.9.3](http://www.ruby-lang.org/en/downloads/)
 * Install Oracle client, e.g. [Oracle Instant Client](http://www.oracle.com/technology/tech/oci/instantclient/index.html)
 * Install ruby-oci8 and ruby-plsql-spec (prefix with sudo if necessary)
 
@@ -32,7 +32,7 @@ See [Installing on Windows](INSTALL-Windows.markdown) in separate file.
 Another alternative is to use [JRuby](http://jruby.org) if for example it is necessary also to test Java classes / methods using Ruby.
 
 * Install [JRuby](http://jruby.org/download)
-* Copy Oracle JDBC driver (e.g. ojdbc14.jar) to JRUBY_HOME/lib directory
+* Copy Oracle JDBC driver (e.g. ojdbc6.jar) to JRUBY_HOME/lib directory
 * Install ruby-plsql-spec (prefix with sudo if necessary)
 
         jruby -S gem install ruby-plsql-spec
