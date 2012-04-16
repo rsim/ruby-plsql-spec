@@ -1,3 +1,11 @@
+== 0.3.0 2012-04-16
+
+* Changes
+  * Use latest ruby-plsql version 0.5.0 and latest nokogiri version 1.5
+  * Tested with ruby-oci8 version 2.1.0
+  * Tested with Ruby version 1.9.3 which is now recommended version
+  * Changed example specs to use expect {}.to instead of lambda {}.should
+
 == 0.2.1 2010-10-22
 
 * Changes
