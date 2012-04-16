@@ -16,27 +16,27 @@ describe "Oracle E-Business Suite" do
 
     describe "Session initialization" do
       it "should initialize session with valid user and responsibility" do
-        lambda {
+        expect {
           init_ebs_user(:user_name => @user_name, :responsibility_name => @responsibility_name)
-        }.should_not raise_error
+        }.not_to raise_error
       end
 
       it "should raise error with invalid user" do
-        lambda {
+        expect {
           init_ebs_user(:user_name => "INVALID", :responsibility_name => @responsibility_name)
-        }.should raise_error(/Wrong user name or responsibility name/)
+        }.to raise_error(/Wrong user name or responsibility name/)
       end
 
       it "should raise error with invalid responsibility" do
-        lambda {
+        expect {
           init_ebs_user(:user_name => @user_name, :responsibility_name => "INVALID")
-        }.should raise_error(/Wrong user name or responsibility name/)
+        }.to raise_error(/Wrong user name or responsibility name/)
       end
 
       it "should raise error with default username and responsibility parameters" do
-        lambda {
+        expect {
           init_ebs_user
-        }.should raise_error(/Wrong user name or responsibility name/)
+        }.to raise_error(/Wrong user name or responsibility name/)
       end
 
     end

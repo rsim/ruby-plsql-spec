@@ -26,9 +26,9 @@ describe "Award bonus" do
       :commission_pct => commission_pct,
       :salary => salary
     )
-    lambda {
+    expect {
       plsql.award_bonus(employee[:employee_id], sales_amt)
-    }.should raise_error(/ORA-06510/)
+    }.to raise_error(/ORA-06510/)
   end
 
 end

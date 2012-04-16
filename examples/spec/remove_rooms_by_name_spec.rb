@@ -33,19 +33,19 @@ describe "Remove rooms by name" do
   end
 
   it "should not remove a room with furniture" do
-    lambda {
-      lambda {
+    expect {
+      expect {
         plsql.remove_rooms_by_name('Living Room')
-      }.should raise_error(/ORA-02292/)
-    }.should_not change { plsql.rooms.all }
+      }.to raise_error(/ORA-02292/)
+    }.not_to change { plsql.rooms.all }
   end
 
   it "should raise exception when NULL value passed" do
-    lambda {
-      lambda {
+    expect {
+      expect {
         plsql.remove_rooms_by_name(NULL)
-      }.should raise_error(/program error/)
-    }.should_not change { plsql.rooms.all }
+      }.to raise_error(/program error/)
+    }.not_to change { plsql.rooms.all }
   end
 
 end
