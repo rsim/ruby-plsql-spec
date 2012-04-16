@@ -22,7 +22,7 @@ Installing
 
 See [Installing on Windows](INSTALL-Windows.md) in separate file.
 
-* Install [Ruby 1.8.7 or Ruby 1.9.3](http://www.ruby-lang.org/en/downloads/)
+* Install [Ruby 1.8.7 or Ruby 1.9.3](http://www.ruby-lang.org/en/downloads/) - it is recommended to use latest 1.9.3 version
 * Install Oracle client, e.g. [Oracle Instant Client](http://www.oracle.com/technology/tech/oci/instantclient/index.html)
 * Install ruby-oci8 and ruby-plsql-spec (prefix with sudo if necessary)
 

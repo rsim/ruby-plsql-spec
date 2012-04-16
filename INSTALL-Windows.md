@@ -6,8 +6,7 @@ Ruby installation on Windows is a little bit different than installation on Mac 
 Install Ruby
 ------------
 
-Download and install Ruby 1.8.7 from [Ruby Installer for Windows](http://www.rubyinstaller.org/).
-(If you prefer you can try to install also Ruby 1.9.2 but it might be more difficult to install ruby-oci8 on this latest Ruby version on Windows).
+Download and install Ruby 1.9.3 from [Ruby Installer for Windows](http://www.rubyinstaller.org/).
 
 When installing then select checkbox to add Ruby to your PATH.
 
