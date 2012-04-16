@@ -20,9 +20,6 @@ EOS
   gem.email = "raimonds.simanovskis@gmail.com"
   gem.homepage = "http://github.com/rsim/ruby-plsql-spec"
   gem.authors = ["Raimonds Simanovskis"]
-  gem.add_dependency "ruby-plsql", ">= 0.4.4"
-  gem.add_dependency "thor", ">= 0.14.2"
-  gem.add_dependency "rspec", ">= 2.0.1"
 end
 Jeweler::RubygemsDotOrgTasks.new
 
@@ -39,7 +36,7 @@ end
 
 task :default => :spec
 
-require 'rake/rdoctask'
+require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 

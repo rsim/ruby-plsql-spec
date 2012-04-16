@@ -1,11 +1,13 @@
 source 'http://rubygems.org'
 
-gem 'jeweler', '~> 1.5.1'
 gem 'rspec', '~> 2.0'
 gem 'thor', '~> 0.14.2'
-gem 'ruby-plsql', '~> 0.4.4'
-gem 'nokogiri', '>= 1.4.3'
+gem 'ruby-plsql', '~> 0.5.0.beta1', :git => 'git://github.com/rsim/ruby-plsql.git'
+gem 'nokogiri', '~> 1.5.0'
 
-platforms :ruby do
-  gem 'ruby-oci8', '~> 2.0.4'
+group :development do
+  gem 'jeweler', '~> 1.8.3'
+
+  # gem 'ruby-oci8', '~> 2.1.0'
+  gem 'ruby-oci8', :git => 'git://github.com/kubo/ruby-oci8.git', :platforms => :mri
 end
