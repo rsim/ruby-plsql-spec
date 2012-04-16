@@ -42,7 +42,7 @@ describe "plsql-spec" do
     end
   end
 
-  def create_test(name, string)
+  def create_test(name, string, options = {})
     file_content = <<-EOS
 require 'spec_helper'
 
@@ -52,10 +52,17 @@ describe "test" do
   end
 end
 EOS
+    file_name = options[:file_name] || 'test_spec.rb'
     Dir.chdir(@root_dir) do
-      File.open('spec/test_spec.rb', 'w') do |file|
+      File.open("spec/#{file_name}", 'w') do |file|
         file << file_content
       end
+    end
+  end
+
+  def delete_test_files
+    Dir["#{@root_dir}/spec/*_spec.rb"].each do |file_name|
+      FileUtils.rm_f(file_name)
     end
   end
 
@@ -129,6 +136,13 @@ EOS
       before(:all) do
         create_test 'SYSDATE should not be NULL',
           'plsql.sysdate.should_not == NULL'
+        create_test 'SYSDATE should be NULL',
+          'plsql.sysdate.should == NULL',
+          :file_name => 'test2_spec.rb'
+      end
+
+      after(:all) do
+        delete_test_files
       end
 
       it "should report one file examples" do
@@ -137,7 +151,7 @@ EOS
       end
 
       it "should report two files examples" do
-        run_cli('run', 'spec/test_spec.rb', 'spec/test_spec.rb')
+        run_cli('run', 'spec/test_spec.rb', 'spec/test2_spec.rb')
         @stdout.should =~ /2 examples/
       end
     end
