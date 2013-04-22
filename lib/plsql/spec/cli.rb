@@ -42,6 +42,10 @@ EOS
           :type => :boolean,
           :default => false,
           :banner => "show DBMS_OUTPUT messages"
+      method_option :capture,
+          :type => :boolean,
+          :default => true,
+          :banner => "hide the output when some exception occur"
       method_option :"html",
           :type => :string,
           :banner => "generate HTML RSpec output to specified file (default is test-results.html)"
@@ -76,10 +80,10 @@ EOS
 
         if files.empty?
           say "Running all specs from spec/", :yellow
-          puts run("#{speccommand} spec", :verbose => false, :capture => true)
+          puts run("#{speccommand} spec", :verbose => false, :capture => options[:capture])
         else
           say "Running specs from #{files.join(', ')}", :yellow
-          puts run("#{speccommand} #{files.join(' ')}", :verbose => false, :capture => true)
+          puts run("#{speccommand} #{files.join(' ')}", :verbose => false, :capture => options[:capture])
         end
 
         if options[:html]
