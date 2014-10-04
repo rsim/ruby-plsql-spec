@@ -11,13 +11,19 @@ describe "Coverage" do
     PLSQL::Coverage.reset_cache
 
     plsql.connect! CONNECTION_PARAMS
+    plsql.execute "ALTER SESSION SET PLSQL_OPTIMIZE_LEVEL=1"
     drop_profiler_tables
     @source = <<-SQL
 CREATE OR REPLACE FUNCTION test_profiler RETURN VARCHAR2 IS
+
+-- A comment before executed code
 BEGIN
   RETURN 'test_profiler';
+  -- A dummy empty line follows
+
 EXCEPTION
   WHEN OTHERS THEN
+    -- We should never reach here
     RETURN 'others';
 END;
     SQL
@@ -26,10 +32,13 @@ END;
     @coverage_data = {
       DATABASE_USER.upcase => {
         "TEST_PROFILER" => {
-          1=>0,
-          3=>1,
-          6=>0,
-          7=>1
+          1=>1,
+          4=>1,
+          5=>1,
+          8=>0,
+          9=>0,
+          11=>0,
+          12=>1
         }
       }
     }
@@ -137,7 +146,7 @@ END;
   describe "generate" do
     def adjust_test_coverage
       @test_coverage = @coverage_data[DATABASE_USER.upcase]['TEST_PROFILER'].dup
-      @test_coverage.delete(1) if @test_coverage[1] && @source.split("\n")[0] =~ /^CREATE OR REPLACE (.*)$/
+      @test_coverage.delete(1) if @test_coverage[1] == 0 && @source.split("\n")[0] =~ /^CREATE OR REPLACE (.*)$/
     end
 
     def expected_coverages
@@ -178,8 +187,11 @@ END;
           a = @details_doc.at_css("table.details a[name=\"line#{i+1}\"]")
           a.should_not be_nil
 
+          doc_line = a.parent.children[1]
+          doc_line_text = doc_line ? doc_line.text : ""
+
           # source text should be present
-          a.parent.children[1].text.should == line
+          doc_line_text.should == line
 
           # table row should have correct class according to coverage data
           tr = a.ancestors('tr')[0]
