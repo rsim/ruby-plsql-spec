@@ -24,7 +24,7 @@ describe "plsql-spec" do
     content = "default:\n" <<
     "  username: #{DATABASE_USER}\n" <<
     "  password: #{DATABASE_PASSWORD}\n" <<
-    "  database: #{DATABASE_NAME}\n"
+    "  database: #{DATABASE_SERVICE_NAME}\n"
     content << "  host:     #{DATABASE_HOST}\n" if defined?(DATABASE_HOST)
     content << "  port:     #{DATABASE_PORT}\n" if defined?(DATABASE_PORT)
     File.open(File.join(@root_dir, 'spec/database.yml'), 'w') do |file|
