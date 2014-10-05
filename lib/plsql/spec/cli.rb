@@ -1,5 +1,7 @@
 require 'thor'
 require 'thor/actions'
+require 'rspec/support'
+RSpec::Support.require_rspec_support 'differ'
 
 # use plsql-spec for showing diff of files
 # by defuault Thor uses diff utility which is not available on Windows
@@ -102,7 +104,7 @@ EOS
 
       desc 'diff [FILE1] [FILE2]', 'show difference between files'
       def diff(file1, file2)
-        differ = RSpec::Expectations::Differ.new
+        differ = RSpec::Support::Differ.new
         say differ.diff_as_string File.read(file2), File.read(file1)
       end
 

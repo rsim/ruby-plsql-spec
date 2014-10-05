@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rspec', '~> 2.0'
+gem 'rspec-support', '~> 3.1'
 gem 'thor', '~> 0.14.2'
 gem 'ruby-plsql', '~> 0.5.0'
 gem 'nokogiri', '~> 1.5.0'
