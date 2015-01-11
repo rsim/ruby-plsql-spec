@@ -72,23 +72,23 @@ EOS
     end
 
     it "should create spec subdirectory" do
-      File.directory?(@root_dir + '/spec').should be_true
+      expect(File.directory?(@root_dir + '/spec')).to be_truthy
     end
 
     it "should create spec_helper.rb" do
-      File.file?(@root_dir + '/spec/spec_helper.rb').should be_true
+      expect(File.file?(@root_dir + '/spec/spec_helper.rb')).to be_truthy
     end
 
     it "should create database.yml" do
-      File.file?(@root_dir + '/spec/database.yml').should be_true
+      expect(File.file?(@root_dir + '/spec/database.yml')).to be_truthy
     end
 
     it "should create helpers/inspect_helpers.rb" do
-      File.file?(@root_dir + '/spec/helpers/inspect_helpers.rb').should be_true
+      expect(File.file?(@root_dir + '/spec/helpers/inspect_helpers.rb')).to be_truthy
     end
 
     it "should create factories subdirectory" do
-      File.directory?(@root_dir + '/spec/factories').should be_true
+      expect(File.directory?(@root_dir + '/spec/factories')).to be_truthy
     end
 
   end
@@ -103,41 +103,41 @@ EOS
     describe "successful tests" do
       before(:all) do
         create_test 'SYSDATE should not be NULL',
-          'plsql.sysdate.should_not == NULL'
+          'expect(plsql.sysdate).not_to eq(NULL)'
         run_cli('run')
       end
 
       it "should report zero failures" do
-        @stdout.should =~ / 0 failures/
+        expect(@stdout).to match(/ 0 failures/)
       end
 
       it "should not return failing exit status" do
-        @exit_status.should be_nil
+        expect(@exit_status).to be_nil
       end
     end
 
     describe "failing tests" do
       before(:all) do
         create_test 'SYSDATE should be NULL',
-          'plsql.sysdate.should == NULL'
+          'expect(plsql.sysdate).to eq(NULL)'
         run_cli('run')
       end
 
       it "should report failures" do
-        @stdout.should =~ / 1 failure/
+        expect(@stdout).to match(/ 1 failure/)
       end
 
       it "should return failing exit status" do
-        @exit_status.should == 1
+        expect(@exit_status).to eq(1)
       end
     end
 
     describe "specified files" do
       before(:all) do
         create_test 'SYSDATE should not be NULL',
-          'plsql.sysdate.should_not == NULL'
+          'expect(plsql.sysdate).not_to eq(NULL)'
         create_test 'SYSDATE should be NULL',
-          'plsql.sysdate.should == NULL',
+          'expect(plsql.sysdate).to eq(NULL)',
           :file_name => 'test2_spec.rb'
       end
 
@@ -147,12 +147,12 @@ EOS
 
       it "should report one file examples" do
         run_cli('run', 'spec/test_spec.rb')
-        @stdout.should =~ /1 example/
+        expect(@stdout).to match(/1 example/)
       end
 
       it "should report two files examples" do
         run_cli('run', 'spec/test_spec.rb', 'spec/test2_spec.rb')
-        @stdout.should =~ /2 examples/
+        expect(@stdout).to match(/2 examples/)
       end
     end
 
@@ -169,7 +169,7 @@ EOS
           END;
         SQL
         create_test 'shoud test coverage',
-          'plsql.test_profiler.should == "test_profiler"'
+          'expect(plsql.test_profiler).to eq("test_profiler")'
         @index_file = File.join(@root_dir, 'coverage/index.html')
         @details_file = File.join(@root_dir, "coverage/#{DATABASE_USER.upcase}-TEST_PROFILER.html")
       end
@@ -190,34 +190,34 @@ EOS
 
       it "should report zero failures" do
         run_cli('run', '--coverage')
-        @stdout.should =~ / 0 failures/
+        expect(@stdout).to match(/ 0 failures/)
       end
 
       it "should generate coverage reports" do
         run_cli('run', '--coverage')
-        File.file?(@index_file).should be_true
-        File.file?(@details_file).should be_true
+        expect(File.file?(@index_file)).to be_truthy
+        expect(File.file?(@details_file)).to be_truthy
       end
 
       it "should generate coverage reports in specified directory" do
         run_cli('run', '--coverage', 'plsql_coverage')
-        File.file?(@index_file.gsub('coverage', 'plsql_coverage')).should be_true
-        File.file?(@details_file.gsub('coverage', 'plsql_coverage')).should be_true
+        expect(File.file?(@index_file.gsub('coverage', 'plsql_coverage'))).to be_truthy
+        expect(File.file?(@details_file.gsub('coverage', 'plsql_coverage'))).to be_truthy
       end
 
       it "should not generate coverage report for ignored schema" do
         run_cli('run', '--coverage', '--ignore_schemas', DATABASE_USER)
-        File.file?(@details_file).should be_false
+        expect(File.file?(@details_file)).to be_falsey
       end
 
       it "should generate coverage report for objects matching like condition" do
         run_cli('run', '--coverage', '--like', "#{DATABASE_USER}.%")
-        File.file?(@details_file).should be_true
+        expect(File.file?(@details_file)).to be_truthy
       end
 
       it "should not generate coverage report for objects not matching like condition" do
         run_cli('run', '--coverage', '--like', "#{DATABASE_USER}.aaa%")
-        File.file?(@details_file).should be_false
+        expect(File.file?(@details_file)).to be_falsey
       end
 
     end
@@ -232,7 +232,7 @@ EOS
           END;
         SQL
         create_test 'shoud test dbms_output',
-          'plsql.test_dbms_output.should be_nil'
+          'expect(plsql.test_dbms_output).to be_nil'
       end
 
       after(:all) do
@@ -245,12 +245,12 @@ EOS
 
       it "should show DBMS_OUTPUT in standard output" do
         run_cli('run', '--dbms_output')
-        @stdout.should =~ /DBMS_OUTPUT: test_dbms_output/
+        expect(@stdout).to match(/DBMS_OUTPUT: test_dbms_output/)
       end
 
       it "should not show DBMS_OUTPUT without specifying option" do
         run_cli('run')
-        @stdout.should_not =~ /DBMS_OUTPUT: test_dbms_output/
+        expect(@stdout).not_to match(/DBMS_OUTPUT: test_dbms_output/)
       end
 
     end
@@ -258,7 +258,7 @@ EOS
     describe "with html output" do
       before(:all) do
         create_test 'SYSDATE should not be NULL',
-          'plsql.sysdate.should_not == NULL'
+          'expect(plsql.sysdate).not_to eq(NULL)'
         @default_html_file = File.join(@root_dir, 'test-results.html')
         @custom_file_name = 'custom-results.html'
         @custom_html_file = File.join(@root_dir, @custom_file_name)
@@ -279,12 +279,12 @@ EOS
 
       it "should create default report file" do
         run_cli('run', '--html')
-        File.read(@default_html_file).should =~ / 0 failures/
+        expect(File.read(@default_html_file)).to match(/ 0 failures/)
       end
 
       it "should create specified report file" do
         run_cli('run', '--html', @custom_file_name)
-        File.read(@custom_html_file).should =~ / 0 failures/
+        expect(File.read(@custom_html_file)).to match(/ 0 failures/)
       end
 
     end
@@ -297,15 +297,15 @@ EOS
     end
 
     it "should show ruby-plsql-spec version" do
-      @stdout.should =~ /ruby-plsql-spec\s+#{PLSQL::Spec::VERSION.gsub('.','\.')}/
+      expect(@stdout).to match(/ruby-plsql-spec\s+#{PLSQL::Spec::VERSION.gsub('.','\.')}/)
     end
 
     it "should show ruby-plsql version" do
-      @stdout.should =~ /ruby-plsql\s+#{PLSQL::VERSION.gsub('.','\.')}/
+      expect(@stdout).to match(/ruby-plsql\s+#{PLSQL::VERSION.gsub('.','\.')}/)
     end
 
     it "should show rspec version" do
-      @stdout.should =~ /rspec\s+#{::RSpec::Version::STRING.gsub('.','\.')}/
+      expect(@stdout).to match(/rspec\s+#{::RSpec::Version::STRING.gsub('.','\.')}/)
     end
 
   end
@@ -329,8 +329,8 @@ EOS
     end
 
     it "should show diff" do
-      @stdout.should =~ /^\-#{@test_strings[0]}$/
-      @stdout.should =~ /^\+#{@test_strings[1]}$/
+      expect(@stdout).to match(/^\-#{@test_strings[0]}$/)
+      expect(@stdout).to match(/^\+#{@test_strings[1]}$/)
     end
   end
 
