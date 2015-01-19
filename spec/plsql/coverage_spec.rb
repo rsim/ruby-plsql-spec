@@ -58,17 +58,17 @@ END;
     end
 
     it "should start coverage collection" do
-      @start_result.should be_true
+      expect(@start_result).to be_truthy
     end
 
     it "should create profiler tables" do
       %w(plsql_profiler_data plsql_profiler_units plsql_profiler_runs).each do |table_name|
-        plsql.send(table_name).should be_a(PLSQL::Table)
+        expect(plsql.send(table_name)).to be_a(PLSQL::Table)
       end
     end
 
     it "should start collecting profiler data" do
-      plsql.plsql_profiler_runs.all.should_not be_empty
+      expect(plsql.plsql_profiler_runs.all).not_to be_empty
     end
 
   end
@@ -81,11 +81,11 @@ END;
     end
 
     it "should stop coverage collection" do
-      @stop_result.should be_true
+      expect(@stop_result).to be_truthy
     end
 
     it "should populate profiler data table" do
-      plsql.plsql_profiler_data.all.should_not be_empty
+      expect(plsql.plsql_profiler_data.all).not_to be_empty
     end
 
   end
@@ -98,21 +98,21 @@ END;
     end
 
     it "should drop profiler tables" do
-      PLSQL::Coverage.cleanup.should be_true
+      expect(PLSQL::Coverage.cleanup).to be_truthy
       %w(plsql_profiler_data plsql_profiler_units plsql_profiler_runs).each do |table_name|
-        PLSQL::Table.find(plsql, table_name.to_sym).should be_nil
+        expect(PLSQL::Table.find(plsql, table_name.to_sym)).to be_nil
       end
     end
 
     it "should delete profiler table data when profiler tables already were present" do
       # simulate that profiler tables were already present
       PLSQL::Coverage.reset_cache
-      lambda {
+      expect {
         PLSQL::Coverage.start
         plsql.test_profiler
         PLSQL::Coverage.stop
         PLSQL::Coverage.cleanup
-      }.should_not change {
+      }.not_to change {
         [plsql.plsql_profiler_data.all, plsql.plsql_profiler_units.all, plsql.plsql_profiler_runs.all]
       }
     end
@@ -126,19 +126,19 @@ END;
     end
 
     it "should get profiler run results" do
-      PLSQL::Coverage.find.coverage_data.should == @coverage_data
+      expect(PLSQL::Coverage.find.coverage_data).to eq(@coverage_data)
     end
 
     it "should not get ignored schemas" do
-      PLSQL::Coverage.find.coverage_data(:ignore_schemas => [DATABASE_USER]).should be_empty
+      expect(PLSQL::Coverage.find.coverage_data(:ignore_schemas => [DATABASE_USER])).to be_empty
     end
 
     it "should get only objects with like condition" do
-      PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.test%").should == @coverage_data
+      expect(PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.test%")).to eq(@coverage_data)
     end
 
     it "should not get objects not matching like condition" do
-      PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.none%").should be_empty
+      expect(PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.none%")).to be_empty
     end
 
   end
@@ -185,29 +185,29 @@ END;
 
           # line should be present
           a = @details_doc.at_css("table.details a[name=\"line#{i+1}\"]")
-          a.should_not be_nil
+          expect(a).not_to be_nil
 
           doc_line = a.parent.children[1]
           doc_line_text = doc_line ? doc_line.text : ""
 
           # source text should be present
-          doc_line_text.should == line
+          expect(doc_line_text).to eq(line)
 
           # table row should have correct class according to coverage data
           tr = a.ancestors('tr')[0]
-          tr.attr('class').should == case @test_coverage[i+1]
+          expect(tr.attr('class')).to eq(case @test_coverage[i+1]
             when nil
               'inferred'
             when 0
               'uncovered'
             else
               'marked'
-            end
+            end)
         end
       end
 
       it "should generate HTML table with coverage percentage" do
-        @details_doc.css("table.report div.percent_graph_legend").map{|div| div.text}.should == expected_coverages
+        expect(@details_doc.css("table.report div.percent_graph_legend").map{|div| div.text}).to eq(expected_coverages)
       end
 
     end
@@ -218,8 +218,8 @@ END;
       end
 
       it "should generate HTML table with coverage percentage" do
-        @index_doc.css("table.report tbody tr:contains('HR.TEST_PROFILER') div.percent_graph_legend").map{|div| div.text}.should == expected_coverages
-        @index_doc.css("table.report tfoot div.percent_graph_legend").map{|div| div.text}.should == expected_coverages
+        expect(@index_doc.css("table.report tbody tr:contains('HR.TEST_PROFILER') div.percent_graph_legend").map{|div| div.text}).to eq(expected_coverages)
+        expect(@index_doc.css("table.report tfoot div.percent_graph_legend").map{|div| div.text}).to eq(expected_coverages)
       end
 
     end
@@ -242,20 +242,20 @@ END;
     end
 
     it "should start collecting profiler data" do
-      plsql(:other).plsql_profiler_runs.all.should_not be_empty
+      expect(plsql(:other).plsql_profiler_runs.all).not_to be_empty
     end
 
     it "should populate profiler data table" do
-      plsql(:other).plsql_profiler_data.all.should_not be_empty
+      expect(plsql(:other).plsql_profiler_data.all).not_to be_empty
     end
 
     it "should get profiler run results" do
-      PLSQL::Coverage.find(:other).coverage_data.should == @coverage_data
+      expect(PLSQL::Coverage.find(:other).coverage_data).to eq(@coverage_data)
     end
 
     it "should generate reports" do
       PLSQL::Coverage.report :other, :directory => File.join(@directory, 'other')
-      File.file?(File.join(@directory, 'other/index.html')).should be_true
+      expect(File.file?(File.join(@directory, 'other/index.html'))).to be_truthy
     end
   end
 
