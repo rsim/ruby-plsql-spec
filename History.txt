@@ -1,3 +1,20 @@
+== 0.4.0 2015-01-30
+
+* Improvements
+  * Use latest latest nokogiri version 1.6, thor 0.19.1 (#18)
+  * Add support for latest rspec 3.x (#13)
+  * Added --capture option to plsql-spec to indicate when to capture the output (#10)
+  * Tested with Ruby version 2.2.0
+  * Tested with ruby-oci8 version 2.1.7
+* Buf fixes
+  * fix for cli diff issue related to color rendering (#14)
+* Internal (development) improvements
+  * Ensure DATABASE\_PORT is Fixnum (#16)
+  * Coverage test fix: compile plsql with optimize level 1 (#13)
+  * Tests: allow fully-qualified service name connection (#12)
+  * Migrate tests to rspec 3.x, using expect syntax (#13)
+  * Use latest jeweler 2.0.1 (#18)
+
 == 0.3.0 2012-04-16
 
 * Changes
