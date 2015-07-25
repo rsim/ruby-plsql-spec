@@ -47,11 +47,11 @@ describe "Oracle E-Business Suite" do
       end
 
       it "should return user name" do
-        plsql.fnd_global.user_name.should == @user_name
+        expect(plsql.fnd_global.user_name).to eq @user_name
       end
 
       it "should return responsibility name" do
-        plsql.fnd_global.resp_name.should == @responsibility_name
+        expect(plsql.fnd_global.resp_name).to eq @responsibility_name
       end
 
     end

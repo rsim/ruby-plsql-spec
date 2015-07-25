@@ -29,7 +29,7 @@ describe "Remove rooms by name" do
   it "should remove a room without furniture" do
     rooms_without_b = plsql.rooms.all("WHERE name NOT LIKE 'B%'")
     plsql.remove_rooms_by_name('B%')
-    plsql.rooms.all.should == rooms_without_b
+    expect(plsql.rooms.all).to eq rooms_without_b
   end
 
   it "should not remove a room with furniture" do
