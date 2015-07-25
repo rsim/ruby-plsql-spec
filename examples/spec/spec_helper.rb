@@ -8,9 +8,8 @@ database_config = YAML.load(File.read(database_config_file))
 database_config = {} unless database_config.is_a?(Hash)
 database_connections = database_config.keys.map{|k| k.to_sym}
 
-database_config.each do |name, params|
-  # change all keys to symbols
-  name = name.to_sym
+database_connections.each do |name|
+  params = database_config[name.to_s]
   symbol_params = Hash[*params.map{|k,v| [k.to_sym, v]}.flatten]
 
   plsql(name).connect! symbol_params
@@ -33,7 +32,7 @@ end
 # Do logoff when exiting to ensure that session temporary tables
 # (used when calling procedures with table types defined in packages)
 at_exit do
-  database_connections.each do |name|
+  database_connections.reverse_each do |name|
     if ENV['PLSQL_COVERAGE']
       PLSQL::Coverage.stop(name)
       coverage_directory = name == :default ? ENV['PLSQL_COVERAGE'] : "#{ENV['PLSQL_COVERAGE']}/#{name}"
@@ -55,13 +54,13 @@ RSpec.configure do |config|
   end
   config.after(:each) do
     # Always perform rollback to savepoint after each test
-    database_connections.each do |name|
+    database_connections.reverse_each do |name|
       plsql(name).rollback_to "before_each"
     end
   end
   config.after(:all) do
     # Always perform rollback after each describe block
-    database_connections.each do |name|
+    database_connections.reverse_each do |name|
       plsql(name).rollback
     end
   end
