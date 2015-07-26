@@ -8,7 +8,7 @@ database_config = YAML.load(File.read(database_config_file))
 database_config = {} unless database_config.is_a?(Hash)
 database_connections = database_config.keys.map{|k| k.to_sym}
 
-database_connections do |name|
+database_connections.each do |name|
   params = database_config[name.to_s]
   symbol_params = Hash[*params.map{|k,v| [k.to_sym, v]}.flatten]
 

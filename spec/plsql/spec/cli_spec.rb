@@ -44,7 +44,7 @@ describe "plsql-spec" do
 
   def create_test(name, string, options = {})
     file_content = <<-EOS
-require 'spec_helper'
+require_relative './spec_helper'
 
 describe "test" do
   it #{name.inspect} do
