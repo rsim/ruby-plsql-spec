@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe "Oracle E-Business Suite" do
   before(:all) do
     # @old_connection = plsql.connection

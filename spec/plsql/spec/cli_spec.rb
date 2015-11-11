@@ -91,6 +91,10 @@ EOS
       expect(File.directory?(@root_dir + '/spec/factories')).to be_truthy
     end
 
+    it "should create .rspec" do
+      expect(File.file?(@root_dir + '/.rspec')).to be_truthy
+    end
+
   end
 
   describe "run" do

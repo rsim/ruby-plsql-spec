@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 # load 'betwnstr' procedure into the database
 require "betwnstr"
 

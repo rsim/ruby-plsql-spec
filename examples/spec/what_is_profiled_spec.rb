@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 require 'what_is_profiled'
 
 describe "what is profiled" do
