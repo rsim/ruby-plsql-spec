@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 require 'remove_rooms_by_name'
 
 describe "Remove rooms by name" do
