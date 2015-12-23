@@ -207,7 +207,7 @@ module PLSQL
 
       # sometimes first PROCEDURE or FUNCTION line is reported as not executed, force ignoring it
       source.each do |line, text|
-        if text =~ /^\s*(PROCEDURE|FUNCTION)/ && coverage[line] == 0
+        if text =~ /^\s*(PROCEDURE|FUNCTION)/i && coverage[line] == 0
           coverage.delete(line)
         end
       end
