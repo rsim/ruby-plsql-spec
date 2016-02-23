@@ -11,4 +11,5 @@ group :development do
 
   # gem 'ruby-oci8', '~> 2.1.0'
   gem 'ruby-oci8', :git => 'git://github.com/kubo/ruby-oci8.git', :platforms => :mri
+  gem 'rspec_junit_formatter'
 end
