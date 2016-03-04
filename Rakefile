@@ -35,6 +35,7 @@ RSpec::Core::RakeTask.new(:rcov) do |t|
 end
 
 task :default => :spec
+task :test => :spec
 
 require 'rdoc/task'
 Rake::RDocTask.new do |rdoc|
