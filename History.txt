@@ -1,5 +1,8 @@
 ==
 
+* Improvements
+  * Support for higher ruby-plsql version ruby-plsql (e.g. the latest one: 0.6)
+
 * Internal (development) improvements
   * Migrate from jeweler to juwelier
 
