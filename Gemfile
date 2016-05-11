@@ -9,7 +9,13 @@ gem 'nokogiri', '~> 1.6.0'
 group :development do
   gem 'jeweler', '~> 2.0.1'
 
-  # gem 'ruby-oci8', '~> 2.1.0'
-  gem 'ruby-oci8', :git => 'git://github.com/kubo/ruby-oci8.git', :platforms => :mri
+  platforms :ruby, :mswin, :mingw do
+    gem 'ruby-oci8', '~> 2.1'
+  end
+  # gem 'ruby-oci8', :git => 'git://github.com/kubo/ruby-oci8.git', :platforms => :mri
   gem 'rspec_junit_formatter'
+end
+
+group :test do
+  gem 'rake',  '>= 10.0'
 end

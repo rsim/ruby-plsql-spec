@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/rsim/ruby-plsql-spec.svg?branch=master)](https://travis-ci.org/rsim/ruby-plsql-spec)
+
 ruby-plsql-spec
 ===============
 PL/SQL unit testing with Ruby
