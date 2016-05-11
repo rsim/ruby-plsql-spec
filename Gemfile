@@ -7,15 +7,14 @@ gem 'ruby-plsql', '~> 0.5.0'
 gem 'nokogiri', '~> 1.6.0'
 
 group :development do
-  gem 'jeweler', '~> 2.0.1'
+  gem 'juwelier', '~> 2.0'
+  gem 'rspec_junit_formatter'
+end
+
+group :test, :development do
+  gem 'rake', '>= 10.0'
 
   platforms :ruby, :mswin, :mingw do
     gem 'ruby-oci8', '~> 2.1'
   end
-  # gem 'ruby-oci8', :git => 'git://github.com/kubo/ruby-oci8.git', :platforms => :mri
-  gem 'rspec_junit_formatter'
-end
-
-group :test do
-  gem 'rake',  '>= 10.0'
 end

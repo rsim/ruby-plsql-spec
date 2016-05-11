@@ -10,18 +10,22 @@ end
 
 require 'rake'
 
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  gem.name = "ruby-plsql-spec"
-  gem.summary = "Oracle PL/SQL unit testing framework using Ruby and RSpec"
-  gem.description = <<-EOS
+begin
+  require 'juwelier'
+  Juwelier::Tasks.new do |gem|
+    gem.name = "ruby-plsql-spec"
+    gem.summary = "Oracle PL/SQL unit testing framework using Ruby and RSpec"
+    gem.description = <<-EOS
 ruby-plsql-spec is Oracle PL/SQL unit testing framework which is built using Ruby programming language, ruby-plsql library and RSpec testing framework.
-EOS
-  gem.email = "raimonds.simanovskis@gmail.com"
-  gem.homepage = "http://github.com/rsim/ruby-plsql-spec"
-  gem.authors = ["Raimonds Simanovskis"]
+  EOS
+    gem.email = "raimonds.simanovskis@gmail.com"
+    gem.homepage = "http://github.com/rsim/ruby-plsql-spec"
+    gem.authors = ["Raimonds Simanovskis"]
+  end
+  Juwelier::RubygemsDotOrgTasks.new
+rescue LoadError
+  # juwelier not installed
 end
-Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core/rake_task'
 RSpec::Core::RakeTask.new(:spec) do |t|
