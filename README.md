@@ -24,7 +24,7 @@ Installing
 
 See [Installing on Windows](INSTALL-Windows.md) in separate file.
 
-* Install [Ruby 1.8.7, 1.9.3 or 2.2.x](http://www.ruby-lang.org/en/downloads/) - it is recommended to use latest version
+* Install [Ruby 1.8.7, 1.9.3 or 2.x](http://www.ruby-lang.org/en/downloads/) - it is recommended to use latest version
 * Install Oracle client, e.g. [Oracle Instant Client](http://www.oracle.com/technology/tech/oci/instantclient/index.html)
 * Install ruby-oci8 and ruby-plsql-spec (prefix with sudo if necessary)
 
@@ -112,7 +112,7 @@ If you want to upgrade ruby-plsql-spec to latest version then just do
 
         gem install ruby-plsql-spec
 
-If you have upgrade from ruby-plsql-spec version 0.1.0 to 0.2.0 then you need to update your spec_helper.rb file to use rspec 2.0. You can do it by running one more time
+If you have upgraded from ruby-plsql-spec version 0.1.0 to 0.2.0 then you need to update your spec_helper.rb file to use rspec 2.0. You can do it by running one more time
 
         plsql-spec init
 

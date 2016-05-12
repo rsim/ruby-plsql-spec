@@ -6,7 +6,7 @@ Ruby installation on Windows is a little bit different than installation on Mac 
 Install Ruby
 ------------
 
-Download and install Ruby 1.9.3 from [Ruby Installer for Windows](http://www.rubyinstaller.org/).
+Download and install Ruby from [Ruby Installer for Windows](http://www.rubyinstaller.org/).
 
 When installing then select checkbox to add Ruby to your PATH.
 
@@ -32,7 +32,7 @@ Install ruby-oci8
 
     gem install ruby-oci8
 
-If you are behind firewall with proxy server then specify proxy server use -p option, e.g.: 
+If you are behind firewall with proxy server then specify proxy server use -p option, e.g.:
 
     gem install ruby-oci8 -p http://proxy.example.com:8080
 
