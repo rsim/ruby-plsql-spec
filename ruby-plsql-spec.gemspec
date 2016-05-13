@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
   s.authors = ["Raimonds Simanovskis".freeze]
-  s.date = "2016-05-11"
+  s.date = "2016-05-13"
   s.description = "ruby-plsql-spec is Oracle PL/SQL unit testing framework which is built using Ruby programming language, ruby-plsql library and RSpec testing framework.\n".freeze
   s.email = "raimonds.simanovskis@gmail.com".freeze
   s.executables = ["plsql-spec".freeze]

@@ -1,10 +1,17 @@
-==
+== 0.5.0 2016-05-13
 
 * Improvements
-  * Support for higher ruby-plsql version ruby-plsql (e.g. the latest one: 0.6)
-
+  * Tested with ruby 2.3.0, 2.3.1
+  * Support for higher ruby-plsql versions - 0.6+ (#38)
+  * `require 'spec_helper'` is no longer needed in each spec file (#26)
+  * Update examples to use the "expect" RSpec syntax (#23)
+* Bug fixes
+  * Fix profiler: was only working with UPCASE procedure and function name (#30)
+  * Fix disposal of connections when using multiple ones (#22)
 * Internal (development) improvements
-  * Migrate from jeweler to juwelier
+  * Migrate from jeweler to juwelier (#37)
+  * Setup CI build on travis-ci.org (#36)
+  * Allow reporting of Unit Tests on Jenkins CI with "RspecJunitFormatter" (#31)
 
 == 0.4.0 2015-01-30
 
