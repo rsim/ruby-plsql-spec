@@ -20,6 +20,7 @@ ruby-plsql-spec is Oracle PL/SQL unit testing framework which is built using Rub
   EOS
     gem.email = "raimonds.simanovskis@gmail.com"
     gem.homepage = "http://github.com/rsim/ruby-plsql-spec"
+    gem.license = "MIT"
     gem.authors = ["Raimonds Simanovskis"]
   end
   Juwelier::RubygemsDotOrgTasks.new
