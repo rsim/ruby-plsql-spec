@@ -78,7 +78,9 @@ module PLSQL
       # Loop through each database object, evaluating it along with the template
       @coverage_data.keys.sort.each do |schema|
         @coverage_data[schema].keys.sort.each do |object|
-          details_report(schema, object)
+          @coverage_data[schema][object].keys.sort.each do |type|
+              details_report(schema, object, type)
+          end
         end
       end
 
@@ -104,7 +106,7 @@ module PLSQL
       end
       data = {}
       rows = plsql(@connection_alias).select_all <<-EOS
-        SELECT u.unit_owner, u.unit_name, d.line# line_number, d.total_occur
+        SELECT u.unit_owner, u.unit_name, u.unit_type, d.line# line_number, d.total_occur
         FROM plsql_profiler_units u, plsql_profiler_data d
         WHERE u.runid = #{@run_number}
           AND u.unit_owner NOT IN (#{quoted_ignore_schemas.join(',')})
@@ -114,10 +116,11 @@ module PLSQL
         ORDER BY u.unit_owner, u.unit_name, d.line#
       EOS
       rows.each do |row|
-        unit_owner, unit_name, line_number, total_occur = row
+        unit_owner, unit_name, unit_type, line_number, total_occur = row
         data[unit_owner] ||= {}
         data[unit_owner][unit_name] ||= {}
-        data[unit_owner][unit_name][line_number] = total_occur
+        data[unit_owner][unit_name][unit_type] ||= {}
+        data[unit_owner][unit_name][unit_type][line_number] = total_occur
       end
       @coverage_data = data
     end
@@ -189,16 +192,21 @@ module PLSQL
       @total_lines = @analyzed_lines = @executed_lines = 0
     end
 
-    def details_report(schema, object)
-      source = plsql(@connection_alias).select_all <<-EOS, schema, object
+    def details_report(schema, object, type)
+      # Both PACKAGE and PACKAGE Body share the same name, so
+      # in order to get accurate PACKAGE Body coverage reports
+      # this module will group by object name and object type.
+      object_type = type == 'PACKAGE SPEC' ? 'PACKAGE' : type
+
+      source = plsql(@connection_alias).select_all <<-EOS, schema, object, object_type
         SELECT s.line, s.text
         FROM all_source s
         WHERE s.owner = :owner
           AND s.name = :name
-          AND s.type NOT IN ('PACKAGE')
+          AND s.type = :type
         ORDER BY s.line
       EOS
-      coverage = (@coverage_data[schema]||{})[object]||{}
+      coverage = ((@coverage_data[schema]||{})[object]||{})[type]||{}
 
       total_lines = source.length
       # return if no access to source of database object
@@ -206,8 +214,9 @@ module PLSQL
       return if total_lines == 0 || source[0][1] =~ /^\s*PACKAGE BODY .* WRAPPED/i
 
       # sometimes first PROCEDURE or FUNCTION line is reported as not executed, force ignoring it
+      # PACKAGE lines must also be ignored.
       source.each do |line, text|
-        if text =~ /^\s*(PROCEDURE|FUNCTION)/i && coverage[line] == 0
+        if text =~ /^\s*(PROCEDURE|FUNCTION|PACKAGE)/i && coverage[line] == 0
           coverage.delete(line)
         end
       end
@@ -223,8 +232,8 @@ module PLSQL
       total_coverage = (total_lines - analyzed_lines + executed_lines).to_f / total_lines * 100
       code_coverage = analyzed_lines > 0 ? executed_lines.to_f / analyzed_lines * 100 : 0
 
-      file_name = "#{schema}-#{object}.html"
-      object_name = "#{schema}.#{object}"
+      file_name = object_type == 'PACKAGE BODY' ? "#{schema}-#{object} Body.html" : "#{schema}-#{object}.html"
+      object_name = object_type == 'PACKAGE BODY' ? "#{schema}.#{object} Body" : "#{schema}.#{object}"
 
       table_line_html = @table_line_template.result binding
       @table_lines << table_line_html

@@ -32,13 +32,15 @@ END;
     @coverage_data = {
       DATABASE_USER.upcase => {
         "TEST_PROFILER" => {
-          1=>1,
-          4=>1,
-          5=>1,
-          8=>0,
-          9=>0,
-          11=>0,
-          12=>1
+          "FUNCTION" => {
+            1=>1,
+            4=>1,
+            5=>1,
+            8=>0,
+            9=>0,
+            11=>0,
+            12=>1
+          }
         }
       }
     }
@@ -119,33 +121,90 @@ END;
   end
 
   describe "get coverage data" do
-    before(:all) do
-      PLSQL::Coverage.start
-      plsql.test_profiler
-      PLSQL::Coverage.stop
+
+    context "when a PLSQL function is run" do
+      before(:all) do
+        PLSQL::Coverage.start
+        plsql.test_profiler
+        PLSQL::Coverage.stop
+      end
+
+      it "should get profiler run results" do
+        expect(PLSQL::Coverage.find.coverage_data).to eq(@coverage_data)
+      end
+
+      it "should not get ignored schemas" do
+        expect(PLSQL::Coverage.find.coverage_data(:ignore_schemas => [DATABASE_USER])).to be_empty
+      end
+
+      it "should get only objects with like condition" do
+        expect(PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.test%")).to eq(@coverage_data)
+      end
+
+      it "should not get objects not matching like condition" do
+        expect(PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.none%")).to be_empty
+      end
     end
 
-    it "should get profiler run results" do
-      expect(PLSQL::Coverage.find.coverage_data).to eq(@coverage_data)
-    end
+    context "when a PLSQL PACKAGE is run" do
+      before(:all) do
+        @package = <<-SQL
+          CREATE OR REPLACE PACKAGE mailman_package AS
+            VAR_TEST CONSTANT NUMBER := 12345;
+            PROCEDURE TEST_PROC;
+          END;
+        SQL
 
-    it "should not get ignored schemas" do
-      expect(PLSQL::Coverage.find.coverage_data(:ignore_schemas => [DATABASE_USER])).to be_empty
-    end
+        @package_body = <<-SQL
+          CREATE OR REPLACE PACKAGE BODY mailman_package AS
+            PROCEDURE TEST_PROC AS
+            BEGIN
+              EXECUTE IMMEDIATE 'SELECT 1 AS TEST FROM DUAL';
+            END;
+          END;
+        SQL
 
-    it "should get only objects with like condition" do
-      expect(PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.test%")).to eq(@coverage_data)
-    end
+        plsql.execute @package
+        plsql.execute @package_body
 
-    it "should not get objects not matching like condition" do
-      expect(PLSQL::Coverage.find.coverage_data(:like => "#{DATABASE_USER}.none%")).to be_empty
+        @package_coverage = {
+          DATABASE_USER.upcase => {
+            "MAILMAN_PACKAGE" => {
+              "PACKAGE SPEC" => {
+                1=>1,
+                2=>1,
+                4=>1
+              },
+              "PACKAGE BODY" => {
+                2=>1,
+                3=>1,
+                4=>1,
+                5=>1
+              }
+            }
+          }
+        }
+
+        PLSQL::Coverage.start
+        plsql.mailman_package.var_test
+        plsql.mailman_package.test_proc
+        PLSQL::Coverage.stop
+      end
+
+      after(:all) do
+        plsql.execute "DROP PACKAGE mailman_package" rescue nil
+      end
+
+      it "should get mailman_package run results" do
+        expect(PLSQL::Coverage.find.coverage_data).to eq(@package_coverage)
+      end
     end
 
   end
 
   describe "generate" do
     def adjust_test_coverage
-      @test_coverage = @coverage_data[DATABASE_USER.upcase]['TEST_PROFILER'].dup
+      @test_coverage = @coverage_data[DATABASE_USER.upcase]['TEST_PROFILER']['FUNCTION'].dup
       @test_coverage.delete(1) if @test_coverage[1] == 0 && @source.split("\n")[0] =~ /^CREATE OR REPLACE (.*)$/
     end
 
