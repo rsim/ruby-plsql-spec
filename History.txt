@@ -1,3 +1,8 @@
+== 0.6.0 2016-12-20
+
+* Improvements
+  * Fixed/added coverage support for PACKAGE and PACKAGE Body types.
+
 == 0.5.0 2016-05-13
 
 * Improvements
