@@ -6,7 +6,7 @@ Ruby installation on Windows is a little bit different than installation on Mac 
 Install Ruby
 ------------
 
-Download and install Ruby from [Ruby Installer for Windows](http://www.rubyinstaller.org/).
+Download and install Ruby from [Ruby Installer for Windows](https://rubyinstaller.org/).
 
 When installing then select checkbox to add Ruby to your PATH.
 
