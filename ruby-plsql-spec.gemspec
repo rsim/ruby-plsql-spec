@@ -6,7 +6,7 @@
 
 Gem::Specification.new do |s|
   s.name = "ruby-plsql-spec".freeze
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
   s.email = "raimonds.simanovskis@gmail.com".freeze
   s.executables = ["plsql-spec".freeze]
   s.extra_rdoc_files = [
-    "README.md"
+    "README.md",
   ]
   s.files = [
     ".rspec",
@@ -73,17 +73,17 @@ Gem::Specification.new do |s|
     "spec/plsql/coverage_spec.rb",
     "spec/plsql/spec/cli_spec.rb",
     "spec/spec_helper.rb",
-    "spec/support/unlock_and_setup_hr_user.sql"
+    "spec/support/unlock_and_setup_hr_user.sql",
   ]
   s.homepage = "http://github.com/rsim/ruby-plsql-spec".freeze
   s.licenses = ["MIT".freeze]
   s.rubygems_version = "2.6.4".freeze
   s.summary = "Oracle PL/SQL unit testing framework using Ruby and RSpec".freeze
 
-  if s.respond_to? :specification_version then
+  if s.respond_to? :specification_version
     s.specification_version = 4
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new("1.2.0")
       s.add_runtime_dependency(%q<rspec>.freeze, ["< 4.0", ">= 2.0"])
       s.add_runtime_dependency(%q<rspec-support>.freeze, ["< 4.0", ">= 3.1"])
       s.add_runtime_dependency(%q<thor>.freeze, ["~> 0.19.1"])
@@ -108,12 +108,11 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rspec>.freeze, ["< 4.0", ">= 2.0"])
     s.add_dependency(%q<rspec-support>.freeze, ["< 4.0", ">= 3.1"])
     s.add_dependency(%q<thor>.freeze, ["~> 0.19.1"])
-    s.add_dependency(%q<ruby-plsql>.freeze, ["~> 0.5"])
-    s.add_dependency(%q<nokogiri>.freeze, ["~> 1.6"])
+    s.add_dependency(%q<ruby-plsql>.freeze, ["~> 0.7"])
+    s.add_dependency(%q<nokogiri>.freeze, ["~> 1.8"])
     s.add_dependency(%q<juwelier>.freeze, ["~> 2.0"])
     s.add_dependency(%q<rspec_junit_formatter>.freeze, ["~> 0"])
     s.add_dependency(%q<rake>.freeze, ["< 12.0", ">= 10.0"])
     s.add_dependency(%q<ruby-oci8>.freeze, ["~> 2.1"])
   end
 end
-
